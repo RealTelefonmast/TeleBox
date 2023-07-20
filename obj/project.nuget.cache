@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "dgSpecHash": "jIVqhKo4supOZsFe8yBHidnI/WCEuvq196QhglQ1rhKCQDinE5Z6kVK+2trogdh1aElVInHVTnmwAcRpd0400A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\switenko.GROUP\\Desktop\\Managed Projects\\TeleBox\\TeleBox\\TeleBox.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\switenko.GROUP\\.nuget\\packages\\communitytoolkit.diagnostics\\8.0.0\\communitytoolkit.diagnostics.8.0.0.nupkg.sha512",
+    "C:\\Users\\switenko.GROUP\\.nuget\\packages\\computesharp\\2.0.3\\computesharp.2.0.3.nupkg.sha512",
+    "C:\\Users\\switenko.GROUP\\.nuget\\packages\\computesharp.core\\2.0.3\\computesharp.core.2.0.3.nupkg.sha512",
+    "C:\\Users\\switenko.GROUP\\.nuget\\packages\\csfml\\2.5.2\\csfml.2.5.2.nupkg.sha512",
+    "C:\\Users\\switenko.GROUP\\.nuget\\packages\\sfml.audio\\2.5.1\\sfml.audio.2.5.1.nupkg.sha512",
+    "C:\\Users\\switenko.GROUP\\.nuget\\packages\\sfml.graphics\\2.5.1\\sfml.graphics.2.5.1.nupkg.sha512",
+    "C:\\Users\\switenko.GROUP\\.nuget\\packages\\sfml.net\\2.5.1\\sfml.net.2.5.1.nupkg.sha512",
+    "C:\\Users\\switenko.GROUP\\.nuget\\packages\\sfml.system\\2.5.1\\sfml.system.2.5.1.nupkg.sha512",
+    "C:\\Users\\switenko.GROUP\\.nuget\\packages\\sfml.window\\2.5.1\\sfml.window.2.5.1.nupkg.sha512",
+    "C:\\Users\\switenko.GROUP\\.nuget\\packages\\terrafx.interop.d3d12memoryallocator\\2.0.1.2\\terrafx.interop.d3d12memoryallocator.2.0.1.2.nupkg.sha512",
+    "C:\\Users\\switenko.GROUP\\.nuget\\packages\\terrafx.interop.windows\\10.0.20348.5\\terrafx.interop.windows.10.0.20348.5.nupkg.sha512"
+  ],
+  "logs": []
+}
