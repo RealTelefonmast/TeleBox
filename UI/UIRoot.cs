@@ -4,6 +4,7 @@ using System.Numerics;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using TeleBox.Engine;
 using Color = SFML.Graphics.Color;
 
 namespace TeleBox.UI;
@@ -11,9 +12,9 @@ namespace TeleBox.UI;
 internal static class UIRoot
 {
     internal static Font MainFont = new Font(Properties.Resources.Minecraft);
+    internal static Shader MainShader = new Shader(null, null, new MemoryStream(Properties.Resources.simpleShader));
     
-    //
-    private static bool _isInitialized;
+    //UI
     private static RenderWindow _window;
     private static SceneManager _sceneManager;
     
@@ -23,19 +24,19 @@ internal static class UIRoot
     public static Rect UIRect => new(0, 0, Width, Height);
 
     public static RenderWindow Window => _window;
+    public static SceneManager SceneManager => _sceneManager;
+    
     public static Vector2f MousePosition { get; private set; }
     public static int Width => (int)_window.Size.X;
     public static int Height => (int)_window.Size.Y;
 
     private static TeleEventArgs CurrentEvents;
-    private static Stopwatch _watch;
     
     internal static void Init(VideoMode mode, string title, Styles style)
     {
-        _watch = new Stopwatch();
-        
         _window = new RenderWindow(mode, title, style);
         _window.SetVerticalSyncEnabled(true);
+        //_window.SetFramerateLimit(120);
         _window.Closed += (_, _) => _window.Close();
         _window.MouseButtonPressed += OnMouseButtonPressed;
         _window.MouseButtonReleased += OnMouseButtonReleased;
@@ -45,12 +46,10 @@ internal static class UIRoot
         
         _sceneManager = new SceneManager(_window);
         
-        _isInitialized = true;
-        
-        UI_Update();
+        UILoop();
     }
 
-    private static void UI_Update()
+    private static void UILoop()
     {
         var colorTop = new Color(10, 10, 20);
         var colorBottom = new Color(30, 20, 10);
@@ -66,18 +65,13 @@ internal static class UIRoot
             if (_ticks == long.MaxValue) 
                 _ticks = 0;
             
-            _watch.Reset();
-            _watch.Start();
-            
             Window.DispatchEvents();
             
             BeginFrame();
             {
                 _sceneManager.HandleEvents(CurrentEvents);
-                _sceneManager.Update(_delta);
             }
             EndFrame();
-            _watch.Stop();
             
             Window.Clear(Color.Black);
             Window.Draw(gradient, PrimitiveType.Quads);
@@ -86,9 +80,13 @@ internal static class UIRoot
 
             if (_ticks % 20 == 0)
             {
-                var milliseconds = (Math.Round(_delta * 1000, 2) + "").Replace(',', '.');
-                var title = $"{Program.AppName} ({milliseconds} ms per frame) | {_watch.ElapsedMilliseconds} ms per frame calc";
-                Window.SetTitle(title);
+                if (PlayRoot.Ready)
+                {
+                    var milliseconds = (Math.Round(_delta * 1000, 2) + "").Replace(',', '.');
+                    var title =
+                        $"{Program.AppName} ({milliseconds} ms per frame) | {PlayRoot.Watch.ElapsedMilliseconds} ms per frame calc";
+                    Window.SetTitle(title);
+                }
             }
         }
     }
@@ -113,10 +111,6 @@ internal static class UIRoot
 
     public static void Draw(Drawable drawable)
     {
-        if (!_isInitialized)
-        {
-            throw new NotImplementedException();
-        }
         _window.Draw(drawable);
     }
 

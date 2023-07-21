@@ -11,7 +11,7 @@ namespace TeleBox.Scenes.Games.FallingSand;
 
 public sealed class World : Drawable
 {
-    private readonly PixelArray _canvas;
+    private readonly RWTexture _canvas;
     private readonly Sprite _sprite;
     private readonly Shader _shader;
     private readonly CellularMatrix _matrix;
@@ -30,9 +30,9 @@ public sealed class World : Drawable
         _matrix = new CellularMatrix(Width, Height);
         _matrix.MatrixUpdated += OnMatrixUpdated;
 
-        _canvas = new PixelArray(Width, Height);
+        _canvas = new RWTexture(Width, Height);
         _sprite = new Sprite();
-        _sprite.Texture = _canvas.Bitmap;
+        _sprite.Texture = _canvas.Texture;
         var fragmentShaderFile = Properties.Resources.simpleShader;
         _shader = new Shader(null, null, new MemoryStream(fragmentShaderFile));
         _shader.SetUniform("texture", Shader.CurrentTexture);
@@ -200,7 +200,7 @@ public sealed class World : Drawable
             var ipos = Vector2.Lerp(new Vector2(_prevMouseX, _prevMouseY), new Vector2(_curMouseX, _curMouseY),
                 i / numDraws);
 
-            AddMaterialToWorld((int)ipos.X, (int)ipos.Y);
+            AddMaterialToWorld((int)ipos.x, (int)ipos.y);
         }
     }
 
@@ -257,7 +257,7 @@ public sealed class World : Drawable
             var ipos = Vector2.Lerp(new Vector2(_prevMouseX, _prevMouseY), new Vector2(_curMouseX, _curMouseY),
                 i / numDraws);
 
-            EraseMaterial((int)ipos.X, (int)ipos.Y);
+            EraseMaterial((int)ipos.x, (int)ipos.y);
         }
     }
 

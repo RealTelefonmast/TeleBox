@@ -68,6 +68,7 @@ public static class Widgets
         rectObj.Position = rect.Position;
         rectObj.OutlineColor = borderColor;
         rectObj.FillColor = fillColor;
+        rectObj.OutlineThickness = 1;
         UIRoot.Window.Draw(rectObj);
     }
 }

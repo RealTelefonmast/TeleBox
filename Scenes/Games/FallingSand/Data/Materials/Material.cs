@@ -331,17 +331,17 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
         private void UpdateSand(int i, int j)
         {
-            if (float.IsInfinity(Velocity.X) || float.IsNaN(Velocity.X))
+            if (float.IsInfinity(Velocity.x) || float.IsNaN(Velocity.x))
             {
-                Velocity = new Vector2(0, Velocity.Y);
+                Velocity = new Vector2(0, Velocity.y);
             }
-            if(float.IsInfinity(Velocity.Y) || float.IsNaN(Velocity.Y))
+            if(float.IsInfinity(Velocity.y) || float.IsNaN(Velocity.y))
             {
-                Velocity = new Vector2(Velocity.X, 0);
+                Velocity = new Vector2(Velocity.x, 0);
             }
             
-            var vX = (int)(i + Velocity.X);
-            var vY = (int)(j + Velocity.Y);
+            var vX = (int)(i + Velocity.x);
+            var vY = (int)(j + Velocity.y);
             
             IntVec2? validPoint = null;
 
@@ -350,15 +350,15 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsWater(point.X, point.Y) ||
-                    Matrix.IsAcid(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsWater(point.x, point.y) ||
+                    Matrix.IsAcid(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -370,7 +370,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -382,15 +382,15 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsWater(point.X, point.Y) ||
-                    Matrix.IsAcid(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsWater(point.x, point.y) ||
+                    Matrix.IsAcid(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -402,7 +402,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -411,11 +411,11 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellBelow = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j + 1);
 
-            if (Matrix.IsFree(cellBelow.X, cellBelow.Y) ||
-                Matrix.IsWater(cellBelow.X, cellBelow.Y) ||
-                Matrix.IsAcid(cellBelow.X, cellBelow.Y))
+            if (Matrix.IsFree(cellBelow.x, cellBelow.y) ||
+                Matrix.IsWater(cellBelow.x, cellBelow.y) ||
+                Matrix.IsAcid(cellBelow.x, cellBelow.y))
             {
-                Matrix.Swap(cellBelow.X, cellBelow.Y, i, j);
+                Matrix.Swap(cellBelow.x, cellBelow.y, i, j);
 
                 return;
             }
@@ -442,8 +442,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 return;
             }
 
-            var vX = (int)(i + Velocity.X);
-            var vY = (int)(j + Velocity.Y);
+            var vX = (int)(i + Velocity.x);
+            var vY = (int)(j + Velocity.y);
 
             IntVec2? validPoint = null;
 
@@ -452,14 +452,14 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsOil(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsOil(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -471,7 +471,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -483,14 +483,14 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsOil(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsOil(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -502,7 +502,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -512,14 +512,14 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsOil(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsOil(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -531,7 +531,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -549,8 +549,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
         private void UpdateOil(int i, int j)
         {
-            var vX = (int)(i + Velocity.X);
-            var vY = (int)(j + Velocity.Y);
+            var vX = (int)(i + Velocity.x);
+            var vY = (int)(j + Velocity.y);
 
             IntVec2? validPoint = null;
 
@@ -559,13 +559,13 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -577,7 +577,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -589,13 +589,13 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -607,7 +607,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -617,13 +617,13 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -635,7 +635,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -933,8 +933,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 }
             }
 
-            var vX = (int)(i + Velocity.X);
-            var vY = (int)(j + Velocity.Y);
+            var vX = (int)(i + Velocity.x);
+            var vY = (int)(j + Velocity.y);
 
             IntVec2? validPoint = null;
 
@@ -943,16 +943,16 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsFire(point.X, point.Y) ||
-                    Matrix.IsSmoke(point.X, point.Y) ||
-                    Matrix.IsSteam(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsFire(point.x, point.y) ||
+                    Matrix.IsSmoke(point.x, point.y) ||
+                    Matrix.IsSteam(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -964,7 +964,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -978,12 +978,12 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 horizontalDirection == Direction.Right ? (i + 1) : horizontalDirection == Direction.Left ? (i - 1) : i,
                 verticalDirection == Direction.Down ? (j + 1) : verticalDirection == Direction.Up ? (j - 1) : j);
 
-            if (Matrix.IsFree(neighborCell.X, neighborCell.Y) ||
-                Matrix.IsSmoke(neighborCell.X, neighborCell.Y) ||
-                Matrix.IsWater(neighborCell.X, neighborCell.Y) ||
-                Matrix.IsSteam(neighborCell.X, neighborCell.Y))
+            if (Matrix.IsFree(neighborCell.x, neighborCell.y) ||
+                Matrix.IsSmoke(neighborCell.x, neighborCell.y) ||
+                Matrix.IsWater(neighborCell.x, neighborCell.y) ||
+                Matrix.IsSteam(neighborCell.x, neighborCell.y))
             {
-                Matrix.Swap(neighborCell.X, neighborCell.Y, i, j);
+                Matrix.Swap(neighborCell.x, neighborCell.y, i, j);
 
                 return;
             }
@@ -1002,8 +1002,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 return;
             }
 
-            var vX = (int)(i + Velocity.X);
-            var vY = (int)(j + Velocity.Y);
+            var vX = (int)(i + Velocity.x);
+            var vY = (int)(j + Velocity.y);
 
             IntVec2? validPoint = null;
 
@@ -1012,15 +1012,15 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsLiquid(point.X, point.Y) ||
-                    Matrix.IsLava(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsLiquid(point.x, point.y) ||
+                    Matrix.IsLava(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -1034,7 +1034,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                     
                 Velocity += new Vector2(Rand.NextBoolean() ? -MaterialConstants.SteamSpreadSpeed : MaterialConstants.SteamSpreadSpeed,0);
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -1043,12 +1043,12 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellAbove = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j - 1);
 
-            if (Matrix.IsFree(cellAbove.X, cellAbove.Y) ||
-                Matrix.IsLiquid(cellAbove.X, cellAbove.Y) ||
-                Matrix.IsLava(cellAbove.X, cellAbove.Y))
+            if (Matrix.IsFree(cellAbove.x, cellAbove.y) ||
+                Matrix.IsLiquid(cellAbove.x, cellAbove.y) ||
+                Matrix.IsLava(cellAbove.x, cellAbove.y))
             {
                 Velocity += new Vector2(direction == Direction.Left ? -MaterialConstants.SteamSpreadSpeed : MaterialConstants.SteamSpreadSpeed, 0);
-                Matrix.Swap(cellAbove.X, cellAbove.Y, i, j);
+                Matrix.Swap(cellAbove.x, cellAbove.y, i, j);
 
                 return;
             }
@@ -1076,8 +1076,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 return;
             }
 
-            var vX = (int)(i + Velocity.X);
-            var vY = (int)(j + Velocity.Y);
+            var vX = (int)(i + Velocity.x);
+            var vY = (int)(j + Velocity.y);
 
             IntVec2? validPoint = null;
 
@@ -1086,16 +1086,16 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsLiquid(point.X, point.Y) ||
-                    Matrix.IsLava(point.X, point.Y) ||
-                    Matrix.IsAsh(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsLiquid(point.x, point.y) ||
+                    Matrix.IsLava(point.x, point.y) ||
+                    Matrix.IsAsh(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -1108,7 +1108,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             if (validPoint.HasValue)
             {
                 Velocity += new Vector2(Rand.NextBoolean() ? -MaterialConstants.SmokeSpreadSpeed : MaterialConstants.SmokeSpreadSpeed, 0);
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -1117,13 +1117,13 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellAbove = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j - 1);
 
-            if (Matrix.IsFree(cellAbove.X, cellAbove.Y) ||
-                Matrix.IsLiquid(cellAbove.X, cellAbove.Y) ||
-                Matrix.IsLava(cellAbove.X, cellAbove.Y) ||
-                Matrix.IsAsh(cellAbove.X, cellAbove.Y))
+            if (Matrix.IsFree(cellAbove.x, cellAbove.y) ||
+                Matrix.IsLiquid(cellAbove.x, cellAbove.y) ||
+                Matrix.IsLava(cellAbove.x, cellAbove.y) ||
+                Matrix.IsAsh(cellAbove.x, cellAbove.y))
             {
                 Velocity += new Vector2(direction == Direction.Left ? -MaterialConstants.SmokeSpreadSpeed : MaterialConstants.SmokeSpreadSpeed, 0);
-                Matrix.Swap(cellAbove.X, cellAbove.Y, i, j);
+                Matrix.Swap(cellAbove.x, cellAbove.y, i, j);
 
                 return;
             }
@@ -1222,8 +1222,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 Matrix.Add(MaterialType.BurningGas, iMethane, jMethane);
             }
 
-            var vX = (int)(i + Velocity.X);
-            var vY = (int)(j + Velocity.Y);
+            var vX = (int)(i + Velocity.x);
+            var vY = (int)(j + Velocity.y);
 
             IntVec2? validPoint = null;
 
@@ -1232,17 +1232,17 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsWater(point.X, point.Y) ||
-                    Matrix.IsFire(point.X, point.Y) ||
-                    Matrix.IsSmoke(point.X, point.Y) ||
-                    Matrix.IsSteam(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsWater(point.x, point.y) ||
+                    Matrix.IsFire(point.x, point.y) ||
+                    Matrix.IsSmoke(point.x, point.y) ||
+                    Matrix.IsSteam(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -1254,7 +1254,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -1263,13 +1263,13 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellAbove = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j - 1);
 
-            if (Matrix.IsFree(cellAbove.X, cellAbove.Y) ||
-                Matrix.IsWater(cellAbove.X, cellAbove.Y) ||
-                Matrix.IsFire(cellAbove.X, cellAbove.Y) ||
-                Matrix.IsSmoke(cellAbove.X, cellAbove.Y) ||
-                Matrix.IsSteam(cellAbove.X, cellAbove.Y))
+            if (Matrix.IsFree(cellAbove.x, cellAbove.y) ||
+                Matrix.IsWater(cellAbove.x, cellAbove.y) ||
+                Matrix.IsFire(cellAbove.x, cellAbove.y) ||
+                Matrix.IsSmoke(cellAbove.x, cellAbove.y) ||
+                Matrix.IsSteam(cellAbove.x, cellAbove.y))
             {
-                Matrix.Swap(cellAbove.X, cellAbove.Y, i, j);
+                Matrix.Swap(cellAbove.x, cellAbove.y, i, j);
 
                 return;
             }
@@ -1279,8 +1279,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
         private void UpdateCoal(int i, int j)
         {
-            var vX = (int)(i + Velocity.X);
-            var vY = (int)(j + Velocity.Y);
+            var vX = (int)(i + Velocity.x);
+            var vY = (int)(j + Velocity.y);
 
             IntVec2? validPoint = null;
 
@@ -1289,16 +1289,16 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsWater(point.X, point.Y) ||
-                    Matrix.IsOil(point.X, point.Y) ||
-                    Matrix.IsAcid(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsWater(point.x, point.y) ||
+                    Matrix.IsOil(point.x, point.y) ||
+                    Matrix.IsAcid(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -1310,7 +1310,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -1328,8 +1328,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
         private void UpdateAcid(int i, int j)
         {
-            var vX = (int)(i + Velocity.X);
-            var vY = (int)(j + Velocity.Y);
+            var vX = (int)(i + Velocity.x);
+            var vY = (int)(j + Velocity.y);
 
             IntVec2? validPoint = null;
 
@@ -1338,13 +1338,13 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -1356,7 +1356,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -1368,13 +1368,13 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -1386,7 +1386,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -1396,13 +1396,13 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -1414,7 +1414,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -1790,8 +1790,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 }
             }
 
-            var vX = (int)(i + Velocity.X);
-            var vY = (int)(j + Velocity.Y);
+            var vX = (int)(i + Velocity.x);
+            var vY = (int)(j + Velocity.y);
 
             IntVec2? validPoint = null;
 
@@ -1800,13 +1800,13 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -1818,7 +1818,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -1830,14 +1830,14 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsOil(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsOil(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -1849,7 +1849,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -1871,9 +1871,9 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellBelow = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j + 1);
 
-            if (Matrix.IsFree(cellBelow.X, cellBelow.Y))
+            if (Matrix.IsFree(cellBelow.x, cellBelow.y))
             {
-                Matrix.Swap(cellBelow.X, cellBelow.Y, i, j);
+                Matrix.Swap(cellBelow.x, cellBelow.y, i, j);
 
                 return;
             }
@@ -1891,8 +1891,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
         private void UpdateMethane(int i, int j)
         {
-            var vX = (int)(i + Velocity.X);
-            var vY = (int)(j + Velocity.Y);
+            var vX = (int)(i + Velocity.x);
+            var vY = (int)(j + Velocity.y);
 
             IntVec2? validPoint = null;
 
@@ -1901,16 +1901,16 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsSteam(point.X, point.Y) ||
-                    Matrix.IsSmoke(point.X, point.Y) ||
-                    Matrix.IsLiquid(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsSteam(point.x, point.y) ||
+                    Matrix.IsSmoke(point.x, point.y) ||
+                    Matrix.IsLiquid(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -1922,7 +1922,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -1934,16 +1934,16 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsSteam(point.X, point.Y) ||
-                    Matrix.IsSmoke(point.X, point.Y) ||
-                    Matrix.IsLiquid(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsSteam(point.x, point.y) ||
+                    Matrix.IsSmoke(point.x, point.y) ||
+                    Matrix.IsLiquid(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -1955,7 +1955,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -2145,8 +2145,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 Matrix.Add(MaterialType.Water, iIce, jIce);
             }
 
-            var vX = (int)(i + Velocity.X);
-            var vY = (int)(j + Velocity.Y);
+            var vX = (int)(i + Velocity.x);
+            var vY = (int)(j + Velocity.y);
 
             IntVec2? validPoint = null;
 
@@ -2155,17 +2155,17 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsSteam(point.X, point.Y) ||
-                    Matrix.IsSmoke(point.X, point.Y) ||
-                    Matrix.IsLiquid(point.X, point.Y) ||
-                    Matrix.IsMovableSolid(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsSteam(point.x, point.y) ||
+                    Matrix.IsSmoke(point.x, point.y) ||
+                    Matrix.IsLiquid(point.x, point.y) ||
+                    Matrix.IsMovableSolid(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -2177,7 +2177,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -2189,17 +2189,17 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsSteam(point.X, point.Y) ||
-                    Matrix.IsSmoke(point.X, point.Y) ||
-                    Matrix.IsLiquid(point.X, point.Y) ||
-                    Matrix.IsMovableSolid(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsSteam(point.x, point.y) ||
+                    Matrix.IsSmoke(point.x, point.y) ||
+                    Matrix.IsLiquid(point.x, point.y) ||
+                    Matrix.IsMovableSolid(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -2211,7 +2211,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -2241,8 +2241,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
         private void UpdateDirt(int i, int j)
         {
-            var vX = (int)(i + Velocity.X);
-            var vY = (int)(j + Velocity.Y);
+            var vX = (int)(i + Velocity.x);
+            var vY = (int)(j + Velocity.y);
 
             IntVec2? validPoint = null;
 
@@ -2251,14 +2251,14 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsLiquid(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsLiquid(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -2270,7 +2270,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -2279,10 +2279,10 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellBelow = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j + 1);
 
-            if (Matrix.IsFree(cellBelow.X, cellBelow.Y) ||
-                Matrix.IsLiquid(cellBelow.X, cellBelow.Y))
+            if (Matrix.IsFree(cellBelow.x, cellBelow.y) ||
+                Matrix.IsLiquid(cellBelow.x, cellBelow.y))
             {
-                Matrix.Swap(cellBelow.X, cellBelow.Y, i, j);
+                Matrix.Swap(cellBelow.x, cellBelow.y, i, j);
 
                 return;
             }
@@ -2318,8 +2318,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 return;
             }
 
-            var vX = (int)(i + Velocity.X);
-            var vY = (int)(j + Velocity.Y);
+            var vX = (int)(i + Velocity.x);
+            var vY = (int)(j + Velocity.y);
 
             IntVec2? validPoint = null;
 
@@ -2328,14 +2328,14 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y) ||
-                    Matrix.IsLiquid(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y) ||
+                    Matrix.IsLiquid(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -2347,7 +2347,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -2356,10 +2356,10 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellBelow = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j + 1);
 
-            if (Matrix.IsFree(cellBelow.X, cellBelow.Y) ||
-                Matrix.IsLiquid(cellBelow.X, cellBelow.Y))
+            if (Matrix.IsFree(cellBelow.x, cellBelow.y) ||
+                Matrix.IsLiquid(cellBelow.x, cellBelow.y))
             {
-                Matrix.Swap(cellBelow.X, cellBelow.Y, i, j);
+                Matrix.Swap(cellBelow.x, cellBelow.y, i, j);
 
                 return;
             }
@@ -2432,8 +2432,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 return;
             }
 
-            var vX = (int)(i + Velocity.X);
-            var vY = (int)(j + Velocity.Y);
+            var vX = (int)(i + Velocity.x);
+            var vY = (int)(j + Velocity.y);
 
             IntVec2? validPoint = null;
 
@@ -2442,13 +2442,13 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var point = _trajectory[number];
 
-                if (point.X == i &&
-                    point.Y == j)
+                if (point.x == i &&
+                    point.y == j)
                 {
                     continue;
                 }
 
-                if (Matrix.IsFree(point.X, point.Y))
+                if (Matrix.IsFree(point.x, point.y))
                 {
                     validPoint = point;
                 }
@@ -2460,7 +2460,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Matrix.Swap(validPoint.Value.X, validPoint.Value.Y, i, j);
+                Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
@@ -2469,9 +2469,9 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellBelow = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j + 1);
 
-            if (Matrix.IsFree(cellBelow.X, cellBelow.Y))
+            if (Matrix.IsFree(cellBelow.x, cellBelow.y))
             {
-                Matrix.Swap(cellBelow.X, cellBelow.Y, i, j);
+                Matrix.Swap(cellBelow.x, cellBelow.y, i, j);
 
                 return;
             }

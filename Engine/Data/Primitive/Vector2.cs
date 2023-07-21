@@ -4,20 +4,22 @@ namespace TeleBox.UI;
 
 public struct Vector2
 {
+    public float x;
+    public float y;
+    public float Magnitude => (float)Math.Sqrt(x * x + y * y);
+
     public Vector2(float x, float y)
     {
-        X = x;
-        Y = y;
+        this.x = x;
+        this.y = y;
     }
-
-    public float X { get; set; }
-    public float Y { get; set; }
+    
     public static Vector2 Zero => new Vector2(0, 0);
 
     public static Vector2 Lerp(Vector2 start, Vector2 end, float amount)
     {
-        var x = Interpolate(start.X, end.X, amount);
-        var y = Interpolate(start.Y, end.Y, amount);
+        var x = Interpolate(start.x, end.x, amount);
+        var y = Interpolate(start.y, end.y, amount);
 
         return new Vector2(x, y);
     }
@@ -27,8 +29,8 @@ public struct Vector2
         return (1.0f - amount) * from + amount * to;
     }
     
-    public static Vector2 operator +(Vector2 a, Vector2 b) => new Vector2(a.X + b.X, a.Y + b.Y);
-    public static Vector2 operator -(Vector2 a, Vector2 b) => new Vector2(a.X - b.X, a.Y - b.Y);
-    public static Vector2 operator *(Vector2 a, Vector2 b) => new Vector2(a.X * b.X, a.Y * b.Y);
-    public static Vector2 operator /(Vector2 a, Vector2 b) => new Vector2(a.X / b.X, a.Y / b.Y);
+    public static Vector2 operator +(Vector2 a, Vector2 b) => new Vector2(a.x + b.x, a.y + b.y);
+    public static Vector2 operator -(Vector2 a, Vector2 b) => new Vector2(a.x - b.x, a.y - b.y);
+    public static Vector2 operator *(Vector2 a, Vector2 b) => new Vector2(a.x * b.x, a.y * b.y);
+    public static Vector2 operator /(Vector2 a, Vector2 b) => new Vector2(a.x / b.x, a.y / b.y);
 }

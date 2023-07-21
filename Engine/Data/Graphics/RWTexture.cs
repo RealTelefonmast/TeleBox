@@ -2,19 +2,19 @@
 
 namespace TeleBox.Engine.Data.Graphics;
 
-public sealed class PixelArray
+public sealed class RWTexture
 {
     public int Width { get; }
     public int Height { get; }
     public byte[] Array { get; }
-    public Texture Bitmap { get; }
+    public Texture Texture { get; }
     
-    public PixelArray(int w, int h)
+    public RWTexture(int w, int h)
     {
         Width = w;
         Height = h;
         Array = new byte[Width * Height * 4];
-        Bitmap = new Texture((uint)Width, (uint)Height);
+        Texture = new Texture((uint)Width, (uint)Height);
     }
 
     public void SetPixel(int x, int y, Color color)
@@ -63,6 +63,6 @@ public sealed class PixelArray
 
     public void Update()
     {
-        Bitmap.Update(Array);
+        Texture.Update(Array);
     }
 }

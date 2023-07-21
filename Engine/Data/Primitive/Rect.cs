@@ -94,4 +94,9 @@ public struct Rect : IEquatable<Rect>
     {
         return HashCode.Combine(x, y, width, height);
     }
+
+    public override string ToString()
+    {
+        return $"({x}, {y}, {width}, {height})";
+    }
 }

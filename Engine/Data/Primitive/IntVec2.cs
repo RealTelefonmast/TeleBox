@@ -1,14 +1,14 @@
 ﻿namespace TeleBox.UI;
 
 public struct IntVec2
-{      
+{
+    public int x;
+    public int y;
+    
     public IntVec2(int x, int y)
     {
-        X = x;
-        Y = y;
+        this.x = x;
+        this.y = y;
     }
-
-    public int X { get; set; }
-    public int Y { get; set; }
     
 }
