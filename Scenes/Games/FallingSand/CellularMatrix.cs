@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualBasic.CompilerServices;
+using TeleBox.Engine.Data;
+using TeleBox.Engine.Data.Primitive;
 using TeleBox.Engine.Utility;
 using TeleBox.Scenes.Games.FallingSand.Data.Materials;
 using TeleBox.Scenes.Materials;
@@ -132,8 +134,8 @@ public sealed class CellularMatrix
 
     public bool IsLiquidNearby(int i, int j, out int iNew, out int jNew)
     {
-        var h = Rand.NextBoolean() ? -1 : 1;
-        var v = Rand.NextBoolean() ? -1 : 1;
+        var h = Rand.Bool ? -1 : 1;
+        var v = Rand.Bool ? -1 : 1;
 
         if (IsLiquid(i + h, j - v))
         {
@@ -207,8 +209,8 @@ public sealed class CellularMatrix
 
     public bool IsElementNearby(int i, int j, MaterialType type, out int iNew, out int jNew)
     {
-        var h = Rand.NextBoolean() ? 1 : -1;
-        var v = Rand.NextBoolean() ? -1 : 1;
+        var h = Rand.Bool ? 1 : -1;
+        var v = Rand.Bool ? -1 : 1;
 
         if (IsWithihBounds(i + h, j + v) && this[i + h, j + v].Type == type)
         {
@@ -282,8 +284,8 @@ public sealed class CellularMatrix
 
     public bool AnyElementNearby(int i, int j, out int iNew, out int jNew)
     {
-        var h = Rand.NextBoolean() ? 1 : -1;
-        var v = Rand.NextBoolean() ? -1 : 1;
+        var h = Rand.Bool ? 1 : -1;
+        var v = Rand.Bool ? -1 : 1;
 
         if (IsOccupied(i + h, j + v))
         {
@@ -357,8 +359,8 @@ public sealed class CellularMatrix
 
     public bool IsCompletelySurrounded(int i, int j)
     {
-        var h = Rand.NextBoolean() ? -1 : 1;
-        var v = Rand.NextBoolean() ? -1 : 1;
+        var h = Rand.Bool ? -1 : 1;
+        var v = Rand.Bool ? -1 : 1;
 
         if (IsWithihBounds(i + h, j + v) && this[i + h, j + v].Type == MaterialType.Empty)
         {
@@ -407,8 +409,8 @@ public sealed class CellularMatrix
     {
         var count = 0;
 
-        var h = Rand.NextBoolean() ? -1 : 1;
-        var v = Rand.NextBoolean() ? -1 : 1;
+        var h = Rand.Bool ? -1 : 1;
+        var v = Rand.Bool ? -1 : 1;
 
         if (IsWithihBounds(i + h, j + v) && this[i + h, j + v].Type == type)
         {

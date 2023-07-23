@@ -21,17 +21,16 @@ internal static class Program
     {
         Thread.CurrentThread.Priority = ThreadPriority.Highest;
 
-        UIThread = new Thread(UIThreadStart);
         PlayThread = new Thread(PlayThreadStart);
-        while (UIRoot.Window.IsOpen)
-        {
-            //..
-        }
+        PlayThread.Start();
+        
+        UIThreadStart();
     }
 
     private static void UIThreadStart()
     {
         UIRoot.Init(new VideoMode(_width, _height), AppName, Styles.Close);
+        UIRoot.Start();
     }
 
     private static void PlayThreadStart()

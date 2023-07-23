@@ -5,7 +5,7 @@ namespace TeleBox.Engine;
 
 public static class PlayRoot
 {
-    private static long targetFrameTime = 1000 / 60; // 1000 ms / 60 frames per second gives us target time per frame in milliseconds
+    private static double targetFrameTime = 1000d / 60; // 1000 ms / 60 frames per second gives us target time per frame in milliseconds
     private static Stopwatch _watch;
 
     public static Stopwatch Watch => _watch;
@@ -20,8 +20,9 @@ public static class PlayRoot
 
     private static void PlayLoop()
     {
-        while (UIRoot.Window.IsOpen)
+        while (true)
         {
+            if ((!UIRoot.IsReady)) continue;
             _watch.Reset();
             _watch.Start();
 

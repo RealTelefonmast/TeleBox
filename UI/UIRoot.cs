@@ -1,10 +1,8 @@
-using System.Diagnostics;
-using System.Drawing;
-using System.Numerics;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using TeleBox.Engine;
+using TeleBox.Engine.Data.Primitive;
 using Color = SFML.Graphics.Color;
 
 namespace TeleBox.UI;
@@ -29,6 +27,7 @@ internal static class UIRoot
     public static Vector2f MousePosition { get; private set; }
     public static int Width => (int)_window.Size.X;
     public static int Height => (int)_window.Size.Y;
+    public static bool IsReady { get; set; }
 
     private static TeleEventArgs CurrentEvents;
     
@@ -36,20 +35,17 @@ internal static class UIRoot
     {
         _window = new RenderWindow(mode, title, style);
         _window.SetVerticalSyncEnabled(true);
-        //_window.SetFramerateLimit(120);
         _window.Closed += (_, _) => _window.Close();
         _window.MouseButtonPressed += OnMouseButtonPressed;
         _window.MouseButtonReleased += OnMouseButtonReleased;
         _window.MouseMoved += OnMouseMoved;
         _window.MouseWheelScrolled += OnMouseWheelScrolled;
         _window.KeyPressed += OnKeyPressed;
-        
         _sceneManager = new SceneManager(_window);
-        
-        UILoop();
+        IsReady = true;
     }
 
-    private static void UILoop()
+    internal static void Start()
     {
         var colorTop = new Color(10, 10, 20);
         var colorBottom = new Color(30, 20, 10);
@@ -70,6 +66,7 @@ internal static class UIRoot
             BeginFrame();
             {
                 _sceneManager.HandleEvents(CurrentEvents);
+                //SceneManager.Update(_delta);
             }
             EndFrame();
             

@@ -2,7 +2,9 @@
 using Microsoft.VisualBasic.CompilerServices;
 using SFML.Graphics;
 using SFML.Window;
+using TeleBox.Engine.Data;
 using TeleBox.Engine.Data.Graphics;
+using TeleBox.Engine.Data.Primitive;
 using TeleBox.Engine.Utility;
 using TeleBox.Scenes.Materials;
 using TeleBox.UI;
@@ -231,12 +233,12 @@ public sealed class World : Drawable
         var count = Rand.Range(1, 1000);
         for (int i = 0; i < count; i++)
         {
-            var r = SelectionRadius * Rand.NextDouble();
-            var theta = 2.0 * Math.PI * Rand.NextDouble();
+            var r = SelectionRadius * Rand.Value;
+            var theta = 2.0 * Math.PI * Rand.Value;
             var rx = Math.Cos(theta) * r;
             var ry = Math.Sin(theta) * r;
 
-            var deviation = Rand.Next(0, 100) > 50 ? -2 : 2;
+            var deviation = Rand.Range(0, 100) > 50 ? -2 : 2;
             var velocity = new Vector2(deviation, Rand.Range(-2, 5));
 
             _matrix.Add(SelectedMaterial, x + (int)rx, y + (int)ry, velocity);

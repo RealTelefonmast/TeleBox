@@ -1,20 +1,18 @@
-﻿using SFML.System;
-
-namespace TeleBox.UI;
+﻿namespace TeleBox.Engine.Data.Primitive;
 
 public struct Vector2
 {
-    public float x;
-    public float y;
+    public readonly float x;
+    public readonly float y;
     public float Magnitude => (float)Math.Sqrt(x * x + y * y);
-
+    
+    public static Vector2 Zero => new Vector2(0, 0);
+    
     public Vector2(float x, float y)
     {
         this.x = x;
         this.y = y;
     }
-    
-    public static Vector2 Zero => new Vector2(0, 0);
 
     public static Vector2 Lerp(Vector2 start, Vector2 end, float amount)
     {

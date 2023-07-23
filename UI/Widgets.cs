@@ -2,6 +2,7 @@
 using SFML.Graphics.Glsl;
 using SFML.System;
 using SFML.Window;
+using TeleBox.Engine.Data.Primitive;
 
 namespace TeleBox.UI;
 

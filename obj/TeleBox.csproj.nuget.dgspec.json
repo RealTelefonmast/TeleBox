@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\switenko.GROUP\\Desktop\\Managed Projects\\TeleBox\\TeleBox\\TeleBox.csproj": {}
+    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\TeleBox\\TeleBox.csproj": {}
   },
   "projects": {
-    "C:\\Users\\switenko.GROUP\\Desktop\\Managed Projects\\TeleBox\\TeleBox\\TeleBox.csproj": {
+    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\TeleBox\\TeleBox.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\switenko.GROUP\\Desktop\\Managed Projects\\TeleBox\\TeleBox\\TeleBox.csproj",
+        "projectUniqueName": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\TeleBox\\TeleBox.csproj",
         "projectName": "TeleBox",
-        "projectPath": "C:\\Users\\switenko.GROUP\\Desktop\\Managed Projects\\TeleBox\\TeleBox\\TeleBox.csproj",
-        "packagesPath": "C:\\Users\\switenko.GROUP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\switenko.GROUP\\Desktop\\Managed Projects\\TeleBox\\TeleBox\\obj\\",
+        "projectPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\TeleBox\\TeleBox.csproj",
+        "packagesPath": "C:\\Users\\maxim\\.nuget\\packages\\",
+        "outputPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\TeleBox\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\switenko.GROUP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\maxim\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,9 +26,8 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Users\\switenko.GROUP\\Desktop\\PackgeStore": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://pkgs.dev.azure.com/Riverbird/DevPublic/_packaging/NugetPackages/nuget/v3/index.json": {}
+          "C:\\Users\\maxim\\Desktop\\PackageStore": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
@@ -67,7 +70,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
         }
       }
     }

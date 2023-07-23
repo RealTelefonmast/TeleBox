@@ -1,143 +1,68 @@
-﻿using TeleBox.Engine.Utility;
+﻿using TeleBox.Engine.Data.Primitive;
+using TeleBox.Engine.Utility;
 using TeleBox.UI;
 
 namespace TeleBox.Scenes.Games.FallingSandTwo.Data;
 
 public static class PixelWorldConfig
 {
-    internal static uint ChunkSize = 512;
+    internal static int ChunkSize = 512/4;
     internal static float Gravity = 4;
 }
 
 public static class GridUtils
 {
-    public static uint Index(uint x, uint y, uint width)
+    public static bool InBounds(this IntVec2 pos, IntVec2 size)
+    {
+        return pos.x >= 0 && pos.x < size.x && pos.y >= 0 && pos.y < size.y;
+    }
+
+    public static bool InBounds(this IntVec2 pos, PixelChunk chunk)
+    {
+        return pos.x >= 0 && pos.x < chunk.Size.x && pos.y >= 0 && pos.y < chunk.Size.y;
+    }
+    
+    public static int Index(int x, int y, int width)
     {
         return x * width + y;
     }
-
-    public static UIntVec2 Position(uint index, uint width)
+    
+    public static int Index(IntVec2 pos, int width)
     {
-        return new UIntVec2(index / width, index % width);
+        return pos.x * width + pos.y;
+    }
+    
+    public static IntVec2 Position(int index, int width)
+    {
+        return new IntVec2(index / width, index % width);
     }
 
     public static bool Inbounds(float x, float y, UIntVec2 size)
     {
         return x >= 0 && x < size.x && y >= 0 && y < size.y;
     }
-
-    public static bool Inbounds(uint index, int length)
-    {
-        return index < length;
-    }
-    
-    public static uint Constrained(uint desiredValue, uint maxValue, uint currentValue)
-    {
-        return currentValue + desiredValue > maxValue ? maxValue - currentValue : desiredValue;
-    }
 }
 
 
 public struct PixelRect
 {
-    public uint x;
-    public uint y;
-    public uint width;
-    public uint height;
+    public int x;
+    public int y;
+    public int width;
+    public int height;
 
-    public UIntVec2 Position => new UIntVec2(x, y);
-    public UIntVec2 Size => new UIntVec2(width, height);
-}
-
-public static class PixelFunctions
-{
-    public static void Update(PixelChunk chunk, uint x, uint y, uint index, Particle particle)
+    public PixelRect(int i, int i1, int chunkSize, int u)
     {
-        switch (particle.id)
-        {
-            case MaterialType.Empty:
-                break;
-            case MaterialType.Sand:
-                UpdateSand(chunk, x, y, index, particle);
-                break;
-            case MaterialType.Water:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+        x =  i;
+        y = i1;
+        width = chunkSize;
+        height = u;
     }
 
-    public static bool IsEmpty(PixelChunk chunk, uint x, uint y)
-    {
-        var part = chunk[x, y];
-        return part.id == MaterialType.Empty;
-    }
+    public int xMax => x + width;
+    public int yMax => y + height;
 
-    public static void UpdateSand(PixelChunk chunk, uint x, uint y, uint index, Particle p)
-    {
-        float dt = 1 / 60f; //TODO:Current.DeltaTime;
-        int fallRate = 4;
-
-        var clampY = GenMath.Clamp(p.velocity.y + (PixelWorldConfig.Gravity * dt), -10, 10);
-        p.velocity = new Vector2(p.velocity.x, clampY);
-        if (GridUtils.Inbounds(x, y+1, chunk.Size) && !IsEmpty(chunk, x, y + 1))
-        {
-            p.velocity = new Vector2(p.velocity.x, p.velocity.y / 2);
-        }
-        
-        var vi_x = x + p.velocity.x;
-        var vi_y = y + p.velocity.y;
-
-        var velocityTarget = new UIntVec2((uint)vi_x, (uint)vi_y);
-        var velocityIndex = GridUtils.Index(velocityTarget.x, velocityTarget.y, chunk.Size.x);
-
-        uint below = GridUtils.Index(x, y + 1, chunk.Size.x);
-        uint belowRight = GridUtils.Index(x + 1, y + 1, chunk.Size.x);
-        uint belowLeft = GridUtils.Index(x - 1, y + 1, chunk.Size.x);
-        
-        var tmp_a = chunk[index];
-        //Physics
-        /*var shouldAttemptOther = true;
-        if (GridUtils.Inbounds(velocityIndex, chunk.Length) && IsEmpty(chunk, velocityTarget.x, velocityTarget.y))
-        {
-            var targetParticle = chunk[velocityIndex];
-            if(!targetParticle.hasBeenUpdated && targetParticle.velocity.Magnitude - p.velocity.Magnitude > 10)
-            {
-                chunk.Set(velocityIndex, p);
-                chunk.Set(index, targetParticle);
-                shouldAttemptOther = false;
-            }
-        }
-
-        if (shouldAttemptOther)
-        {*/
-        
-        // if(velocityIndex == index && IsEmpty(chunk, x, y + 1))
-        // {
-        //     chunk.Set(index, p);
-        //     return;
-        // }        
-        
-        if (GridUtils.Inbounds(x, y + 1, chunk.Size) && IsEmpty(chunk, x, y + 1))
-        {
-            p.velocity = new Vector2(p.velocity.x, PixelWorldConfig.Gravity * dt);
-            var temp = chunk[below];
-            chunk.Set(below, p);
-            chunk.Set(index, temp);
-        }
-        else if (GridUtils.Inbounds(x - 1, y + 1, chunk.Size) && IsEmpty(chunk, x - 1, y + 1))
-        {
-            p.velocity = new Vector2(Rand.Range(0, 1) == 0 ? -1 : 1, PixelWorldConfig.Gravity * dt);
-            var temp = chunk[x - 1, y - 1];
-            chunk.Set(belowLeft, p);
-            chunk.Set(index, temp);
-        }
-        else if (GridUtils.Inbounds(x + 1, y + 1, chunk.Size) && IsEmpty(chunk, x + 1, y + 1))
-        {
-            p.velocity = new Vector2(Rand.Range(0, 1) == 0 ? -1 : 1, PixelWorldConfig.Gravity * dt);
-            var temp = chunk[x + 1, y + 1];
-            chunk.Set(belowRight, p);
-            chunk.Set(index, temp);
-        }
-    }
+    public IntVec2 Position => new IntVec2(x, y);
+    public IntVec2 Size => new IntVec2(width, height);
+    public Rect Rect => new Rect(x,y,width,height); //{ get; set; }
 }

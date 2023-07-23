@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualBasic.CompilerServices;
+using TeleBox.Engine.Data;
+using TeleBox.Engine.Data.Primitive;
 using TeleBox.Engine.Utility;
 using TeleBox.Scenes.Materials;
 using TeleBox.UI;
@@ -375,7 +377,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 return;
             }
 
-            var spreadRate = Rand.NextBoolean() ? SpreadRate : -SpreadRate;
+            var spreadRate = Rand.Bool ? SpreadRate : -SpreadRate;
 
             CalculateTrajectory(i, j, i + spreadRate, j + 1);
             for (int number = 0; number < _trajectory.Count; number++)
@@ -407,7 +409,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 return;
             }
 
-            var random = Rand.Next(0, 100);
+            var random = Rand.Range(0, 100);
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellBelow = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j + 1);
 
@@ -666,8 +668,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var steamRegionHeight = Rand.Range(-MaterialConstants.SteamRegionHeight, MaterialConstants.SteamRegionHeight);
                 var steamRegionWidth = Rand.Range(-MaterialConstants.SteamRegionWidth, MaterialConstants.SteamRegionWidth);
-                var r1 = Rand.NextBoolean();
-                var r2 = Rand.NextBoolean();
+                var r1 = Rand.Bool;
+                var r2 = Rand.Bool;
                 for (int n = r1 ? steamRegionHeight : -steamRegionHeight; r1 ? n < MaterialConstants.SteamRegionHeight : n > MaterialConstants.SteamRegionHeight; n += r1 ? 1 : -1)
                 {
                     for (int m = r2 ? steamRegionWidth : -steamRegionWidth; r2 ? m < MaterialConstants.SteamRegionWidth : m > MaterialConstants.SteamRegionWidth; m += r2 ? 1 : -1)
@@ -686,8 +688,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var smokeRegionHeight = Rand.Range(-MaterialConstants.SmokeRegionWidth, MaterialConstants.SmokeRegionHeight);
                 var smokeRegionWidth = Rand.Range(-MaterialConstants.SmokeRegionWidth, MaterialConstants.SmokeRegionHeight);
-                var r1 = Rand.NextBoolean();
-                var r2 = Rand.NextBoolean();
+                var r1 = Rand.Bool;
+                var r2 = Rand.Bool;
                 for (int n = r1 ? smokeRegionHeight : -smokeRegionHeight; r1 ? n < MaterialConstants.SmokeRegionHeight : n > MaterialConstants.SmokeRegionHeight; n += r1 ? 1 : -1)
                 {
                     for (int m = r2 ? smokeRegionWidth : -smokeRegionWidth; r2 ? m < MaterialConstants.SmokeRegionWidth : m > MaterialConstants.SmokeRegionWidth; m += r2 ? 1 : -1)
@@ -707,7 +709,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 if (Rand.Range(0, 10) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     var randomHorizontal = Rand.Range(-10, -1);
                     for (int n = randomHorizontal; n < 0; n++)
                     {
@@ -791,7 +793,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.FireSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -816,7 +818,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.FireSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -841,7 +843,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.FireSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -866,7 +868,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.FireSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -891,7 +893,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.FireSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -916,7 +918,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.BurningGasSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -969,9 +971,9 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 return;
             }
 
-            var random = Rand.Next(0, 100);
+            var random = Rand.Range(0, 100);
             var horizontalDirection = random < 50 ? Direction.Right : Direction.Left;
-            random = Rand.Next(0, 100);
+            random = Rand.Range(0, 100);
             var verticalDirection = random < 50 ? Direction.Up : Direction.Down;
 
             var neighborCell = new IntVec2(
@@ -1033,13 +1035,13 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             if (validPoint.HasValue)
             {
                     
-                Velocity += new Vector2(Rand.NextBoolean() ? -MaterialConstants.SteamSpreadSpeed : MaterialConstants.SteamSpreadSpeed,0);
+                Velocity += new Vector2(Rand.Bool ? -MaterialConstants.SteamSpreadSpeed : MaterialConstants.SteamSpreadSpeed,0);
                 Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
 
-            var random = Rand.Next(0, 100);
+            var random = Rand.Range(0, 100);
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellAbove = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j - 1);
 
@@ -1107,13 +1109,13 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
             if (validPoint.HasValue)
             {
-                Velocity += new Vector2(Rand.NextBoolean() ? -MaterialConstants.SmokeSpreadSpeed : MaterialConstants.SmokeSpreadSpeed, 0);
+                Velocity += new Vector2(Rand.Bool ? -MaterialConstants.SmokeSpreadSpeed : MaterialConstants.SmokeSpreadSpeed, 0);
                 Matrix.Swap(validPoint.Value.x, validPoint.Value.y, i, j);
 
                 return;
             }
 
-            var random = Rand.Next(0, 100);
+            var random = Rand.Range(0, 100);
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellAbove = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j - 1);
 
@@ -1259,7 +1261,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 return;
             }
 
-            var random = Rand.Next(0, 100);
+            var random = Rand.Range(0, 100);
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellAbove = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j - 1);
 
@@ -1513,8 +1515,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var regionHeight = Rand.Range(-MaterialConstants.SteamRegionHeight, MaterialConstants.SteamRegionHeight);
                 var regionWidth = Rand.Range(-MaterialConstants.SteamRegionWidth, MaterialConstants.SteamRegionWidth);
-                var r1 = Rand.NextBoolean();
-                var r2 = Rand.NextBoolean();
+                var r1 = Rand.Bool;
+                var r2 = Rand.Bool;
                 for (int n = r1 ? regionHeight : -regionHeight; r1 ? n < MaterialConstants.SteamRegionHeight : n > MaterialConstants.SteamRegionHeight; n += r1 ? 1 : -1)
                 {
                     for (int m = r2 ? regionWidth : -regionWidth; r2 ? m < MaterialConstants.SteamRegionWidth : m > MaterialConstants.SteamRegionWidth; m += r2 ? 1 : -1)
@@ -1536,8 +1538,8 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
             {
                 var regionHeight = Rand.Range(-MaterialConstants.SmokeRegionHeight, MaterialConstants.SmokeRegionHeight);
                 var regionWidth = Rand.Range(-MaterialConstants.SmokeRegionWidth, MaterialConstants.SmokeRegionWidth);
-                var r1 = Rand.NextBoolean();
-                var r2 = Rand.NextBoolean();
+                var r1 = Rand.Bool;
+                var r2 = Rand.Bool;
                 for (int n = r1 ? regionHeight : -regionHeight; r1 ? n < MaterialConstants.SmokeRegionHeight : n > MaterialConstants.SmokeRegionHeight; n += r1 ? 1 : -1)
                 {
                     for (int m = r2 ? regionWidth : -regionWidth; r2 ? m < MaterialConstants.SmokeRegionWidth : m > MaterialConstants.SmokeRegionWidth; m += r2 ? 1 : -1)
@@ -1648,7 +1650,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.FireSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -1673,7 +1675,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.FireSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -1698,7 +1700,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.FireSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -1723,7 +1725,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.BurningGasSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -1748,7 +1750,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.FireSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -1773,7 +1775,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.FireSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -1823,7 +1825,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 return;
             }
 
-            var spreadRate = Rand.NextBoolean() ? SpreadRate : -SpreadRate;
+            var spreadRate = Rand.Bool ? SpreadRate : -SpreadRate;
 
             CalculateTrajectory(i, j, i + spreadRate, j);
             for (int number = 0; number < _trajectory.Count; number++)
@@ -1867,7 +1869,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
         private void UpdateAsh(int i, int j)
         {
-            var random = Rand.Next(0, 100);
+            var random = Rand.Range(0, 100);
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellBelow = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j + 1);
 
@@ -1927,7 +1929,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 return;
             }
 
-            var spreadRate = Rand.NextBoolean() ? SpreadRate : -SpreadRate;
+            var spreadRate = Rand.Bool ? SpreadRate : -SpreadRate;
 
             CalculateTrajectory(i, j, i + spreadRate, j);
             for (int number = 0; number < _trajectory.Count; number++)
@@ -1995,7 +1997,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.FireSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -2020,7 +2022,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.FireSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -2045,7 +2047,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.FireSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -2070,7 +2072,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.FireSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -2095,7 +2097,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.FireSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -2120,7 +2122,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
 
                 if (Rand.Range(0, MaterialConstants.BurningGasSpreadChance) == 0)
                 {
-                    var r = Rand.NextBoolean();
+                    var r = Rand.Bool;
                     for (var n = -3; n < 2; n++)
                     {
                         for (var m = r ? -3 : 2; r ? m < 2 : m > -3; m += r ? 1 : -1)
@@ -2182,7 +2184,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 return;
             }
 
-            var spreadRate = Rand.NextBoolean() ? SpreadRate : -SpreadRate;
+            var spreadRate = Rand.Bool ? SpreadRate : -SpreadRate;
 
             CalculateTrajectory(i, j, i + spreadRate, j);
             for (int number = 0; number < _trajectory.Count; number++)
@@ -2275,7 +2277,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 return;
             }
 
-            var random = Rand.Next(0, 100);
+            var random = Rand.Range(0, 100);
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellBelow = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j + 1);
 
@@ -2352,7 +2354,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 return;
             }
 
-            var random = Rand.Next(0, 100);
+            var random = Rand.Range(0, 100);
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellBelow = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j + 1);
 
@@ -2465,7 +2467,7 @@ namespace TeleBox.Scenes.Games.FallingSand.Data.Materials;
                 return;
             }
 
-            var random = Rand.Next(0, 100);
+            var random = Rand.Range(0, 100);
             var direction = random < 50 ? Direction.Right : Direction.Left;
             var cellBelow = new IntVec2(direction == Direction.Right ? (i + 1) : direction == Direction.Left ? (i - 1) : i, j + 1);
 

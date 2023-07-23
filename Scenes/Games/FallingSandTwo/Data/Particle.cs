@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using TeleBox.Engine.Data.Primitive;
 using TeleBox.UI;
 
 namespace TeleBox.Scenes.Games.FallingSandTwo.Data;
@@ -8,6 +9,7 @@ public enum MaterialType : byte
     Empty = 0,
     Sand = 1,
     Water = 2,
+    Wanderer = 3,
 }
 
 public struct Particle
@@ -26,4 +28,13 @@ public struct Particle
         color = Color.White;
         hasBeenUpdated = false;
     }
+
+    public static Particle Empty => new Particle
+    {
+        id = MaterialType.Empty,
+        lifeTime = 0,
+        velocity = default,
+        color = Color.Transparent,
+        hasBeenUpdated = false
+    };
 }

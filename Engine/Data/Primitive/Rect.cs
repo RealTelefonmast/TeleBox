@@ -1,14 +1,13 @@
-﻿using System.Numerics;
-using SFML.System;
+﻿using SFML.System;
 
-namespace TeleBox.UI;
+namespace TeleBox.Engine.Data.Primitive;
 
 public struct Rect : IEquatable<Rect>
 {
-    public float x;
-    public float y;
-    public float width;
-    public float height;
+    public readonly float x;
+    public readonly float y;
+    public readonly float width;
+    public readonly float height;
 
     public Vector2f Position => new(x, y);
     public Vector2f Size => new(width, height);
