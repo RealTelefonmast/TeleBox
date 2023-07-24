@@ -11,7 +11,7 @@ public struct Rect : IEquatable<Rect>
 
     public Vector2f Position => new(x, y);
     public Vector2f Size => new(width, height);
-
+    
     public Rect(float x, float y, float width, float height)
     {
         this.x = x;

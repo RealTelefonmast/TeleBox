@@ -78,5 +78,15 @@ namespace TeleBox.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] UniSansThin {
+            get {
+                object obj = ResourceManager.GetObject("UniSansThin", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

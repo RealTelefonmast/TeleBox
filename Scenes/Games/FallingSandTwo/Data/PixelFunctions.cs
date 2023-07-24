@@ -3,11 +3,13 @@ using SFML.Graphics;
 using TeleBox.Engine.Data;
 using TeleBox.Engine.Data.Primitive;
 using TeleBox.Engine.Utility;
+using TeleBox.Scenes.Games.FallingSandTwo.Data.Functions;
 using TeleBox.UI;
 using TerraFX.Interop.Windows;
 
 namespace TeleBox.Scenes.Games.FallingSandTwo.Data;
 
+/*
 [StructLayout(LayoutKind.Sequential)]
 public struct ParticleState
 {
@@ -65,24 +67,24 @@ public static class StateSolver
         var state = new ParticleState(pos, particle, chunk);
     }
 }
+*/
 
 public static class PixelFunctions
 {
-    public static void Update(PixelChunk chunk, int x, int y, int index, Particle particle)
+    public static void Update(int index, IntVec2 pos, Particle particle, ParticleGrid grid)
     {
         if (particle.hasBeenUpdated)
             return;
-
-        chunk.Set(index, particle);
+        
         switch (particle.id)
         {
             case MaterialType.Empty:
                 break;
             case MaterialType.Sand:
-                UpdateSand(chunk, x, y, particle);
+                UpdateSand(index, pos, particle, grid);
                 break;
             case MaterialType.Water:
-                UpdateWater(chunk, x, y, index, particle);
+                //UpdateWater(index, pos, particle, grid);
                 break;
 
             case MaterialType.Wanderer:
@@ -92,177 +94,51 @@ public static class PixelFunctions
         }
     }
 
-    public static bool InBoundsOrNeighbor(IntVec2 pos, PixelChunk chunk)
+    #region Cell Checks
+
+    internal static bool Inbounds(IntVec2 pos, ParticleGrid grid)
     {
-        if (GridUtils.Inbounds(pos.x, pos.y, chunk.Size))
+        return pos.x >= 0 && pos.x < grid.Size.x && pos.y >= 0 && pos.y < grid.Size.y;
+    }
+    
+    internal static bool IsEmpty(IntVec2 pos, ParticleGrid grid)
+    {
+        if (Inbounds(pos, grid))
         {
-            return true;
+            return grid[pos].id == MaterialType.Empty;
         }
-        return chunk.IsInNeighbor(pos, out _, out _);
+        return false;
     }
 
-    public static bool IsEmpty(IntVec2 pos, PixelChunk chunk)
-    {
-        if (chunk.IsInNeighbor(pos, out var nghb, out var nghPos))
-        {
-            return nghb[nghPos].id == MaterialType.Empty;
-        }
-        var part = chunk[pos];
-        return part.id == MaterialType.Empty;
-    }
-
-    public static bool IsSurrounded(IntVec2 pos, PixelChunk chunk)
-    {
-        for (var i = 0; i < 8; i++)
-        {
-            var adj = pos + GenAdj.AdjacentCells[i];
-            if (InBoundsOrNeighbor(adj, chunk) && IsEmpty(adj, chunk)) return false;
-        }
-
-        return true;
-    }
-
-    public static bool IsInLiquid(IntVec2 pos, PixelChunk chunk, out IntVec2 lPos)
+    internal static bool IsInLiquid(IntVec2 pos, ParticleGrid grid, out IntVec2 lPos)
     {
         lPos = IntVec2.Zero;
         for (var i = 0; i < 8; i++)
         {
             var adj = pos + GenAdj.AdjacentCells[i];
             var nPos = new IntVec2(adj.x, adj.y);
-            if (!InBoundsOrNeighbor(lPos, chunk) || chunk[lPos].id != MaterialType.Water) continue;
+            if (!Inbounds(lPos, grid) || grid[lPos].id != MaterialType.Water) continue;
             lPos = nPos;
             return true;
         }
 
         return false;
     }
-
-    public static void UpdateSand(PixelChunk chunk, int x, int y, Particle p)
+    
+    #endregion
+    
+    public static void UpdateSand(int index, IntVec2 pos, Particle particle, ParticleGrid grid)
     {
         //TODO: EDGE CASE: horizontal or vertical rows of sand start cascading:
         //When a particle next to another sand particle falls down, and cannot move left or down, it moves to the below right
         //Below the neighbor particle, this particle then cannot move down or to the left either, so it moves right next to the other particle
         //This makes it look like the particles all move in sync to the right
 
-        _ = new ParticleFunction(new IntVec2(x, y), p).MoveDown(chunk).MoveDownLeft(chunk).MoveDownRight(chunk);
-    }
-
-    public struct ParticleFunction
-    {
-        private readonly IntVec2 _pos;
-        private readonly Particle _p;
-        private bool isDone = false;
-
-        public bool IsCompleted => isDone;
-
-        public static ParticleFunction Completed => new ParticleFunction()
-        {
-            isDone = true
-        };
-
-        public ParticleFunction(IntVec2 pos, Particle p)
-        {
-            _pos = pos;
-            _p = p;
-        }
-
-        public ParticleFunction MoveDown(PixelChunk chunk)
-        {
-            if (isDone) return this;
-            if (Swap(_pos, _p, chunk, _pos + GenAdj.Down))
-            {
-                return Completed;
-            }
-
-            return this;
-        }
-
-        public ParticleFunction MoveDownLeft(PixelChunk chunk)
-        {
-            if (isDone) return this;
-            if (Swap(_pos, _p, chunk, _pos + GenAdj.DownLeft))
-            {
-                return Completed;
-            }
-
-            return this;
-        }
-
-        public ParticleFunction MoveDownRight(PixelChunk chunk)
-        {
-            if (isDone) return this;
-            if (Swap(_pos, _p, chunk, _pos + GenAdj.DownRight))
-            {
-                return Completed;
-            }
-
-            return this;
-        }
-
-        public ParticleFunction MoveInLiquid(PixelChunk chunk)
-        {
-            if (isDone) return this;
-            if (IsInLiquid(_pos, chunk, out var lPos) && Rand.Range(0, 10) == 0)
-            {
-                if (Swap(_pos, _p, chunk, lPos))
-                    return Completed;
-            }
-
-            return this;
-        }
-        
-        public ParticleFunction ApplyFallSpread(int fallRate, int spreadRate, PixelChunk chunk)
-        {
-            if (isDone) return this;
-            var found = false;
-            for (var i = 0; i < fallRate; ++i)
-            {
-                for (var j = spreadRate; j > 0; --j)
-                {
-                    var pos = _pos + new IntVec2(-j, i);
-                    if (InBoundsOrNeighbor(pos, chunk) && IsEmpty(pos, chunk))
-                    {
-                        Swap(_pos, _p, chunk, pos);
-                        found = true;
-                        break;
-                    }
-
-                    var pos2 = _pos + new IntVec2(j, i);
-                    if (InBoundsOrNeighbor(pos2, chunk) && IsEmpty(pos2, chunk))
-                    {
-                        Swap(_pos, _p, chunk, pos2);
-                        found = true;
-                        break;
-                    }
-                }
-            }
-            
-            if (found)return Completed;
-            return this;
-        }
-        
-        public ParticleFunction Set(PixelChunk chunk)
-        {
-            chunk.Set(_pos, _p, true);
-            return this;
-        }
-
-        private static bool Swap(IntVec2 pos, Particle p, PixelChunk chunk, IntVec2 newPos)
-        {
-            if (InBoundsOrNeighbor(newPos, chunk) && IsEmpty(newPos, chunk))
-            {
-                var temp = chunk[newPos];
-                chunk.Set(newPos, p, true);
-                chunk.Set(pos, temp, true);
-                return true;
-            }
-
-            return false;
-        }
+        _ = new ParticleFunction(pos, particle).MoveDown(grid).MoveDownLeft(grid).MoveDownRight(grid);
     }
 
 
-    public static void UpdateWater(PixelChunk chunk, int x, int y, int index, Particle p)
+    /*public static void UpdateWater(int index, IntVec2 pos, Particle particle, ParticleGrid grid)
     {
         var pos = new IntVec2(x, y);
         var belowPos = pos + GenAdj.Down;
@@ -429,14 +305,9 @@ public static class PixelFunctions
                 // }
             }
         }
-    }
+    }*/
 }
 
-// if (GridUtils.Inbounds(x + vx, y + vy) && IsEmpty(x + vx, y + vy))
-        // {
-        //     chunk.Set(v_idx, p);
-        //     chunk.Set(index, new Particle(MaterialType.Empty));
-        // }
 
     
     

@@ -9,7 +9,7 @@ namespace TeleBox.UI;
 
 internal static class UIRoot
 {
-    internal static Font MainFont = new Font(Properties.Resources.Minecraft);
+    internal static Font MainFont = new Font(Properties.Resources.UniSansThin);
     internal static Shader MainShader = new Shader(null, null, new MemoryStream(Properties.Resources.simpleShader));
     
     //UI
