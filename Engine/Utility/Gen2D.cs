@@ -3,8 +3,37 @@ using TeleBox.UI;
 
 namespace TeleBox.Engine.Utility;
 
-public class GenGrid
+public class Gen2D
 {
+    public static void RayCast(int x0, int y0, int x1, int y1)
+    {
+        var dx = Math.Abs(x1 - x0);
+        var dy = Math.Abs(y1 - y0);
+        var x = x0;
+        var y = y0;
+        var n = 1 + dx + dy;
+        var x_inc = (x1 > x0) ? 1 : -1;
+        var y_inc = (y1 > y0) ? 1 : -1;
+        var error = dx - dy;
+        dx *= 2;
+        dy *= 2;
+
+        for (; n > 0; --n)
+        {
+            //
+            if (error > 0)
+            {
+                x += x_inc;
+                error -= dy;
+            }
+            else
+            {
+                y += y_inc;
+                error += dx;
+            }
+        }
+    }
+    
     private List<IntVec2> CalculateTrajectory(int x0, int y0, int x1, int y1)
     {
         var trajectory = new List<IntVec2>();

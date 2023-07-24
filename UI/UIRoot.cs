@@ -9,7 +9,7 @@ namespace TeleBox.UI;
 
 internal static class UIRoot
 {
-    internal static Font MainFont = new Font(Properties.Resources.UniSansThin);
+    internal static Font MainFont = new Font(Properties.Resources.SansUndertale);
     internal static Shader MainShader = new Shader(null, null, new MemoryStream(Properties.Resources.simpleShader));
     
     //UI
@@ -92,13 +92,7 @@ internal static class UIRoot
     {
         Window.DispatchEvents();
         Window.Clear(Color.Black);
-        CurrentEvents = new TeleEventArgs
-        {
-            MouseButton = Event.CurMouseState._button,
-            MouseX = (int)Event.CurMouseState._x,
-            MouseY = (int)Event.CurMouseState._y,
-
-        };
+        CurrentEvents = Event.Current;
     }
 
     private static void EndFrame()

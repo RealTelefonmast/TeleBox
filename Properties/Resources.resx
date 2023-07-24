@@ -24,6 +24,9 @@
     <data name="UniSansThin" type="System.Resources.ResXFileRef, System.Windows.Forms">
         <value>..\Resources\UniSansThin.otf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </data>
+    <data name="SansUndertale" type="System.Resources.ResXFileRef, System.Windows.Forms">
+        <value>..\Resources\SansUndertale.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </data>
     <data name="simpleShader" type="System.Resources.ResXFileRef, System.Windows.Forms">
         <value>..\Resources\simpleShader.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </data>

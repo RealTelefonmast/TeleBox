@@ -10,6 +10,7 @@ public enum MaterialType : byte
     Sand = 1,
     Water = 2,
     Wanderer = 3,
+    Smoke
 }
 
 public struct Particle

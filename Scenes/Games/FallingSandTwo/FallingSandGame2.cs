@@ -13,7 +13,12 @@ public class FallingSandGame2 : BaseGame
     {
         _world = new PixelWorld(UIRoot.Width, UIRoot.Height);
     }
-    
+
+    public override void HandleEvents(TeleEventArgs args)
+    {
+        _world.HandleEvents(args);
+    }
+
     public override void Update(float delta)
     {
         _world.Update(delta);

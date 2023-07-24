@@ -72,6 +72,16 @@ namespace TeleBox.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] SansUndertale {
+            get {
+                object obj = ResourceManager.GetObject("SansUndertale", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] simpleShader {
             get {
                 object obj = ResourceManager.GetObject("simpleShader", resourceCulture);

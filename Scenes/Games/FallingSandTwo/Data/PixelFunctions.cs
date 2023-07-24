@@ -4,6 +4,7 @@ using TeleBox.Engine.Data;
 using TeleBox.Engine.Data.Primitive;
 using TeleBox.Engine.Utility;
 using TeleBox.Scenes.Games.FallingSandTwo.Data.Functions;
+using TeleBox.Scenes.Games.FallingSandTwo.Data.World;
 using TeleBox.UI;
 using TerraFX.Interop.Windows;
 
@@ -96,6 +97,28 @@ public static class PixelFunctions
 
     #region Cell Checks
 
+    public static bool NearLiquid(IntVec2 pos, ParticleGrid grid, out IntVec2 liquidPos)
+    {
+        liquidPos = IntVec2.Zero;
+        for (int i = 0; i < 8; i++)
+        {
+            var newPos = pos + GenAdj.AdjacentCells[i];
+            if (!Inbounds(newPos, grid)) continue;
+            if (grid[newPos].id == MaterialType.Water)
+            {
+                liquidPos = newPos;
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    public static bool Inbounds(int index, ParticleGrid grid)
+    {
+        return index >= 0 && index < grid.Size.Area;
+    }
+    
     internal static bool Inbounds(IntVec2 pos, ParticleGrid grid)
     {
         return pos.x >= 0 && pos.x < grid.Size.x && pos.y >= 0 && pos.y < grid.Size.y;
@@ -134,7 +157,9 @@ public static class PixelFunctions
         //Below the neighbor particle, this particle then cannot move down or to the left either, so it moves right next to the other particle
         //This makes it look like the particles all move in sync to the right
 
-        _ = new ParticleFunction(pos, particle).MoveDown(grid).MoveDownLeft(grid).MoveDownRight(grid);
+        _ = new ParticleFunction(pos, particle).MoveByAcc(grid).MoveDownLeftRight(grid).MoveInLiquid(grid);
+        return;
+        _ = new ParticleFunction(pos, particle).MoveDown(grid).RandLeftRight(grid);
     }
 
 

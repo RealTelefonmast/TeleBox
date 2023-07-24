@@ -34,6 +34,7 @@ public struct MouseState
 
 public static class Event
 {
+    private static bool _hasInput = false;
     private static MouseState _prevMouseState;
     private static MouseState _currMouseState;
 
@@ -41,6 +42,30 @@ public static class Event
 
     public static MouseState CurMouseState => _currMouseState;
     
+    public static TeleEventArgs Current
+    {
+        get
+        {
+            if (_hasInput)
+            {
+                return new TeleEventArgs
+                {
+                    MouseButton = Event.CurMouseState._button,
+                    MouseX = (int)Event.CurMouseState._x,
+                    MouseY = (int)Event.CurMouseState._y,
+
+                };
+            }
+            return TeleEventArgs.Empty;
+        }
+    }
+
+    public static void StartRecording()
+    {
+        
+    }
+    
+
     public static bool IsMouseDown(Mouse.Button button)
     {
         return Mouse.IsButtonPressed(button);
