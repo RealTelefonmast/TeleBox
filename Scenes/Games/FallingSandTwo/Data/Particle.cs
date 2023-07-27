@@ -6,11 +6,13 @@ namespace TeleBox.Scenes.Games.FallingSandTwo.Data;
 
 public enum MaterialType : byte
 {
+    RigidBody = 8,
     Empty = 0,
     Sand = 1,
     Water = 2,
     Wanderer = 3,
-    Smoke
+    Smoke,
+    Stone
 }
 
 public struct Particle
@@ -21,6 +23,15 @@ public struct Particle
     public Color color;
     public bool hasBeenUpdated;
 
+    public Particle(MaterialType id)
+    {
+        this.id = id;
+        lifeTime = 1;
+        velocity = Vector2.Zero;
+        color = MaterialDB.GetColor(id,1);
+        hasBeenUpdated = false;
+    }
+    
     public Particle()
     {
         id = MaterialType.Empty;

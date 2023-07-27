@@ -4,7 +4,10 @@ public struct Vector2
 {
     public readonly float x;
     public readonly float y;
-    public float Magnitude => (float)Math.Sqrt(x * x + y * y);
+    
+    public  float LengthSqr =>  x * x + y * y;
+    public float Magnitude => (float)Math.Sqrt(LengthSqr);
+    public Vector2 Normalized => new Vector2(x / Magnitude, y / Magnitude);
     
     public static Vector2 Zero => new Vector2(0, 0);
     
@@ -27,8 +30,34 @@ public struct Vector2
         return (1.0f - amount) * from + amount * to;
     }
     
+    public static Vector2 operator -(Vector2 a) => new Vector2(-a.x, -a.y);
+    
     public static Vector2 operator +(Vector2 a, Vector2 b) => new Vector2(a.x + b.x, a.y + b.y);
     public static Vector2 operator -(Vector2 a, Vector2 b) => new Vector2(a.x - b.x, a.y - b.y);
     public static Vector2 operator *(Vector2 a, Vector2 b) => new Vector2(a.x * b.x, a.y * b.y);
     public static Vector2 operator /(Vector2 a, Vector2 b) => new Vector2(a.x / b.x, a.y / b.y);
+    
+    public static Vector2 operator *(Vector2 a, float b) => new Vector2(a.x * b, a.y * b);
+    public static Vector2 operator /(Vector2 a, float b) => new Vector2(a.x / b, a.y / b);
+
+    public static float Cross(Vector2 a, Vector2 b)
+    {
+        return a.x * b.y - a.y * b.x;
+    }
+    
+    public static Vector2 Cross(Vector2 a, float s)
+    {
+        return new Vector2(s * a.y, -s * a.x);
+    }
+    
+        
+    public static Vector2 Cross(float s, Vector2 a)
+    {
+        return new Vector2( -s * a.y, s * a.x );
+    }
+
+    public static float Dot(Vector2 a, Vector2 b)
+    {
+        return a.x * b.x + a.y * b.y;
+    }
 }

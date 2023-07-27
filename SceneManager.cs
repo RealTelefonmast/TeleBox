@@ -51,7 +51,7 @@ public class SceneManager
         }
     }
     
-    public void HandleEvents(TeleEventArgs args)
+    public void HandleEvents(TEvent args)
     {
         CurrentScene.HandleEvents(args);
     }

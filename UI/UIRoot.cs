@@ -19,17 +19,15 @@ internal static class UIRoot
     //
     private static float _delta;
     private static long _ticks;
-    public static Rect UIRect => new(0, 0, Width, Height);
-
-    public static RenderWindow Window => _window;
-    public static SceneManager SceneManager => _sceneManager;
     
-    public static Vector2f MousePosition { get; private set; }
+    //
+    public static bool IsReady { get; set; }
     public static int Width => (int)_window.Size.X;
     public static int Height => (int)_window.Size.Y;
-    public static bool IsReady { get; set; }
-
-    private static TeleEventArgs CurrentEvents;
+    public static Rect UIRect => new(0, 0, Width, Height);
+    
+    public static RenderWindow Window => _window;
+    public static SceneManager SceneManager => _sceneManager;
     
     internal static void Init(VideoMode mode, string title, Styles style)
     {
@@ -65,15 +63,21 @@ internal static class UIRoot
             
             BeginFrame();
             {
-                _sceneManager.HandleEvents(CurrentEvents);
-                //SceneManager.Update(_delta);
+                try
+                {
+                    _sceneManager.HandleEvents(TEvent.Current);
+                    //SceneManager.Update(_delta);
+                    Window.Clear(Color.Black);
+                    Window.Draw(gradient, PrimitiveType.Quads);
+                    _sceneManager.Render();
+                    Window.Display();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception: " + ex.Message);
+                }
             }
             EndFrame();
-            
-            Window.Clear(Color.Black);
-            Window.Draw(gradient, PrimitiveType.Quads);
-            _sceneManager.Render();
-            Window.Display();
 
             if (_ticks % 20 == 0)
             {
@@ -92,12 +96,17 @@ internal static class UIRoot
     {
         Window.DispatchEvents();
         Window.Clear(Color.Black);
-        CurrentEvents = Event.Current;
+        BeginRegisteringEvents();
     }
-
+    
+    private static void BeginRegisteringEvents()
+    {
+        TEvent.BeginFrame();
+    }
+    
     private static void EndFrame()
     {
-        CurrentEvents = TeleEventArgs.Empty;
+        TEvent.Consume();
     }
 
     public static void Draw(Drawable drawable)
@@ -126,17 +135,17 @@ internal static class UIRoot
 
     private static void OnMouseMoved(object? sender, MouseMoveEventArgs e)
     {
-        MousePosition = new Vector2f(e.X, e.Y);
+        TEvent.Set_MouseEvent(e, MouseEventType.Moved);
     }
 
     private static void OnMouseButtonReleased(object? sender, MouseButtonEventArgs e)
     {
-        Event.Notify_MouseEvent(e.Button, MouseEvent.Released);
+        TEvent.Set_MouseEvent(e, MouseEventType.Released);
     }
 
     private static void OnMouseButtonPressed(object? sender, MouseButtonEventArgs e)
     {
-        Event.Notify_MouseEvent(e.Button, MouseEvent.Pressed);
+        TEvent.Set_MouseEvent(e, MouseEventType.Pressed);
     }
     
     #endregion

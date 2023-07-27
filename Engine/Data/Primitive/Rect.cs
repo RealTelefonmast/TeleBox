@@ -28,6 +28,11 @@ public struct Rect : IEquatable<Rect>
         height = size.Y;
     }
 
+    public bool Contains(IntVec2 point)
+    {
+        return Contains(point.x, point.y);
+    }
+    
     public bool Contains(Vector2f point)
     {
         return Contains(point.X, point.Y);
@@ -37,7 +42,7 @@ public struct Rect : IEquatable<Rect>
     {
         return x >= this.x && x <= this.x + width && y >= this.y && y <= this.y + height;
     }
-
+    
     public Rect TopPart(float pixels)
     {
         return new Rect(x, y, width, Math.Max(0, pixels));

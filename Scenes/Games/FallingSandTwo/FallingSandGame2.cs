@@ -14,7 +14,7 @@ public class FallingSandGame2 : BaseGame
         _world = new PixelWorld(UIRoot.Width, UIRoot.Height);
     }
 
-    public override void HandleEvents(TeleEventArgs args)
+    public override void HandleEvents(TEvent args)
     {
         _world.HandleEvents(args);
     }

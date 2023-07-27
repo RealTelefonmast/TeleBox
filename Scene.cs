@@ -27,7 +27,7 @@ public abstract class Scene : Drawable
         
     }
 
-    public virtual void HandleEvents(TeleEventArgs args)
+    public virtual void HandleEvents(TEvent args)
     {
         
     }

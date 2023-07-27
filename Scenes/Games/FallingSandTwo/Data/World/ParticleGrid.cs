@@ -55,18 +55,6 @@ public class ParticleGrid
     
     public void Step(float delta)
     {
-        if (frame % 8 == 0)
-        {
-            Set(new IntVec2(130, 120), new Particle
-            {
-                id = MaterialType.Sand,
-                lifeTime = 2,
-                velocity = new Vector2(0, 1),
-                color = MaterialDB.GetColor(MaterialType.Sand, 0),
-                hasBeenUpdated = true
-            }, true);
-        }
-
         for (int i = 0; i < _dataChunks.Length; i++)
         {
             var chunk = _dataChunks[i];
@@ -150,32 +138,50 @@ public class ParticleGrid
         }
 
         workingRect.x = Math.Clamp(workingRect.x - 1, 0, _size.x - 1);
-        workingRect.y = Math.Clamp(workingRect.y - 1, 0, _size.x - 1);
+        workingRect.y = Math.Clamp(workingRect.y - 2, 0, _size.y - 1);
         workingRect.width = Math.Clamp((maxX - minX + 1) + 2, 0, (_size.x - workingRect.x) - 1);
-        workingRect.height = Math.Clamp((maxY - minY + 1) + 2, 0, (_size.y - workingRect.y) - 1);
+        workingRect.height = Math.Clamp((maxY - minY + 1) + 4, 0, (_size.y - workingRect.y) - 1);
 
         chunk.SetDirty(workingRect);
     }
 
-    public void HandleInput(TeleEventArgs args)
+    public void HandleInput(TEvent args)
     {
-        return;
-        var x = args.MouseX;
-        var y = args.MouseY;
-        if (args.MouseButton == Mouse.Button.Left)
+        var pos = args.MousePos;
+        if (PixelFunctions.Inbounds(pos, this))
         {
-            for (int i = 0; i < 8; i++)
+            var leftDown = TEvent.IsMouseDown(Mouse.Button.Left);
+            var rightDown = TEvent.IsMouseDown(Mouse.Button.Right);
+            if (leftDown)
             {
-                for (int k = 0; k < 8; k++)
+                for (int i = 0; i < 16; i++)
                 {
-                    Set(new IntVec2(x + i, y + k), new Particle
+                    for (int k = 0; k < 16; k++)
                     {
-                        id = MaterialType.Sand,
-                        lifeTime = 2,
-                        velocity = new Vector2(0, 1),
-                        color = MaterialDB.GetColor(MaterialType.Sand, 0),
-                        hasBeenUpdated = true
-                    }, true);
+                        Set(new IntVec2(pos.x + i, pos.y + k),
+                            new Particle( MaterialType.Sand )
+                            {
+                                lifeTime = 2,
+                                velocity = new Vector2(0, 1),
+                                hasBeenUpdated = true
+                            }, true);
+                    }
+                }
+            }
+            if (rightDown)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int k = 0; k < 8; k++)
+                    {
+                        Set(new IntVec2(pos.x + i, pos.y + k),
+                            new Particle(MaterialType.Stone)
+                            {
+                                lifeTime = 2,
+                                velocity = new Vector2(0, 1),
+                                hasBeenUpdated = true
+                            }, true);
+                    }
                 }
             }
         }

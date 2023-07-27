@@ -1,89 +1,105 @@
 ﻿using System.Drawing;
-using System.Numerics;
 using SFML.System;
 using SFML.Window;
+using TeleBox.Engine.Data.Primitive;
 
 namespace TeleBox.UI;
 
-public class EventData
+[Flags]
+public enum MouseEventType
 {
-    public Mouse.Button MouseUp { get; set; }
-    public bool MouseMove { get; set; }
-    public bool MouseWheel { get; set; }
-    
-    public Keyboard.Key KeyDown { get; set; }
-
-    public void Clear()
-    {
-    }
-}
-
-public enum MouseEvent
-{
+    Moved,
+    Scrolled,
     Pressed,
     Released,
 }
 
-public struct MouseState
+public struct MouseEvent
 {
-    public Mouse.Button _button;
-    public MouseEvent _event;
-    public float _x;
-    public float _y;
+    public Mouse.Button Button { get; set; }
+    public MouseEventType Type { get; set; }
+
+    public static MouseEvent Invalid => new MouseEvent
+    {
+        Button = (Mouse.Button)99,
+        Type = (MouseEventType)99,
+    };
+
+    public void SetMoved()
+    {
+        Type |= MouseEventType.Moved;
+    }
 }
 
-public static class Event
+//Event Pipeline
+
+// - Input happens, record it
+// Keep track of mouse location and inputs
+
+//Frame Begins
+//Set current mouse pos and events as nullable struct
+
+//Frame Ends
+//Set everything back to null
+
+public struct TEvent
 {
-    private static bool _hasInput = false;
-    private static MouseState _prevMouseState;
-    private static MouseState _currMouseState;
-
-    public static Vector2f MousePosition => UIRoot.MousePosition;
-
-    public static MouseState CurMouseState => _currMouseState;
+    //Constantly Tracked
+    private static MouseEvent _prevMouse;
+    private static MouseEvent _curMouse;
     
-    public static TeleEventArgs Current
+    private static int _x { get; set; }
+    private static int _y { get; set; }
+
+    public IntVec2 MousePos => new IntVec2(_x, _y);
+    public Vector2 MousePosF => new Vector2(_x, _y);
+    
+    //Current Frame
+    private MouseEvent? MouseP { get; set; }
+    public MouseEvent Mouse => MouseP ?? MouseEvent.Invalid;
+    
+    public static TEvent Current { get; private set; }
+
+    public static void BeginFrame()
     {
-        get
+        Current = new TEvent()
         {
-            if (_hasInput)
-            {
-                return new TeleEventArgs
-                {
-                    MouseButton = Event.CurMouseState._button,
-                    MouseX = (int)Event.CurMouseState._x,
-                    MouseY = (int)Event.CurMouseState._y,
-
-                };
-            }
-            return TeleEventArgs.Empty;
-        }
-    }
-
-    public static void StartRecording()
-    {
-        
+            MouseP = _curMouse
+        };
     }
     
+    public static void Consume()
+    {
+        Current = new TEvent() {MouseP = MouseEvent.Invalid};
+    }
+
+    #region Mouse
+
+    public static bool Clicked(Mouse.Button button)
+    {
+        return _prevMouse.Button == button && _prevMouse.Type == MouseEventType.Pressed && 
+               _curMouse.Button == button && _curMouse.Type == MouseEventType.Released;
+    }
+
+    public static void Set_MouseEvent(MouseMoveEventArgs e, MouseEventType moved)
+    {
+        _prevMouse = _curMouse;
+        _curMouse.SetMoved();
+        _x = e.X;
+        _y = e.Y;
+    }
+
+    public static void Set_MouseEvent(MouseButtonEventArgs e, MouseEventType type)
+    {
+        _prevMouse = _curMouse;
+        _curMouse.Button = e.Button;
+        _curMouse.Type = type;
+    }
+    
+    #endregion
 
     public static bool IsMouseDown(Mouse.Button button)
     {
-        return Mouse.IsButtonPressed(button);
-    }
-
-    public static void Notify_MouseEvent(Mouse.Button button, MouseEvent @event)
-    {
-        _prevMouseState = _currMouseState;
-        _currMouseState._x = MousePosition.X;
-        _currMouseState._y = MousePosition.Y;
-        _currMouseState._button = button;
-        _currMouseState._event = @event;
-        
-    }
-    
-    public static bool Clicked(Mouse.Button button)
-    {
-        return _prevMouseState._button == button && _prevMouseState._event == MouseEvent.Pressed 
-                                                 && _currMouseState._button == button && _currMouseState._event == MouseEvent.Released;
+        return Current.Mouse.Button == button && Current.Mouse.Type == MouseEventType.Pressed;
     }
 }

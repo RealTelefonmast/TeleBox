@@ -32,40 +32,6 @@ public class PixelWorld : Drawable
         var fragmentShaderFile = Properties.Resources.simpleShader;
         _shader = new Shader(null, null, new MemoryStream(fragmentShaderFile));
         _shader.SetUniform("texture", Shader.CurrentTexture);
-        
-        //Game
-        /*_chunks = new PixelChunk[width * height / (PixelWorldConfig.ChunkSize * PixelWorldConfig.ChunkSize)];
-        
-        for (int i = 0; i < _chunks.Length; i++)
-        {
-            var y = ((i * PixelWorldConfig.ChunkSize) / width) * PixelWorldConfig.ChunkSize;
-            var x =((i * PixelWorldConfig.ChunkSize) % width);
-            var widthChunk = PixelWorldConfig.ChunkSize;  // GridUtils.Constrained(PixelWorldConfig.ChunkSize, (uint)width, x);
-            var heightChunk = PixelWorldConfig.ChunkSize; // GridUtils.Constrained(PixelWorldConfig.ChunkSize, (uint)height, y);
-            _chunks[i] = new PixelChunk(i, new PixelRect
-            {
-                x = x,
-                y = y,
-                width = widthChunk,
-                height = heightChunk,
-            });
-        }
-
-        for (int i = 0; i < _chunks.Length; i++)
-        {
-            var chunk = _chunks[i];
-            var pos = IntVec2.FromIndex(i, 16);// GridUtils.Position(i, );
-            for (int k = 0; k < 4; k++)
-            {
-                var adj = pos + GenAdj.AdjacentCells4Way[k];
-                if (adj.InBounds(new IntVec2(16, 8)))
-                {
-                    var index = adj.ToIndex(new IntVec2(16,8));
-                    chunk.SetNeighbor(_chunks[index], k);
-                }
-            }
-            
-        }*/
     }
 
     private int counter = 0;
@@ -107,7 +73,7 @@ public class PixelWorld : Drawable
         _texture.SetPixel(x,y, particleColor);
     }
 
-    public void HandleEvents(TeleEventArgs args)
+    public void HandleEvents(TEvent args)
     {
         _grid.HandleInput(args);
     }

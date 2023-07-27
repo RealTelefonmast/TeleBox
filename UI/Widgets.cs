@@ -22,12 +22,12 @@ public static class Widgets
         UIRoot.Window.Draw(textObj);
     }
 
-    private static bool _isPointerDown = false;
+    internal static bool _isPointerDown = false;
     
     public static bool Button(string text, Rect rect)
     {
-        var isHovering = rect.Contains(Event.MousePosition);
-        bool isDownThisFrame = Event.IsMouseDown(Mouse.Button.Left);
+        var isHovering = rect.Contains(TEvent.Current.MousePos);
+        bool isDownThisFrame = TEvent.IsMouseDown(Mouse.Button.Left);
         var bColor = isHovering ? Color.White : Color.Black;
         var fillColor = isHovering ? Color.Black : Color.White;
 

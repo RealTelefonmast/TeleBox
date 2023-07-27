@@ -60,6 +60,12 @@ public static class MaterialDB
         waterColors.Add(new Color(34, 130, 204));
         _colors.Add(MaterialType.Water, waterColors);
 
+        var stoneColors = new ColorSamples();
+        stoneColors.Add(new Color(136, 140, 141));
+        stoneColors.Add(new Color(123, 126, 127));
+        stoneColors.Add(new Color(128, 131, 132));
+        _colors.Add(MaterialType.Stone, stoneColors);
+        
         var wanderer = new ColorSamples();
         wanderer.Add(new Color(0, 255, 255));
         _colors.Add(MaterialType.Wanderer, wanderer);

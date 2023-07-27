@@ -28,9 +28,9 @@ public class MainMenu : Scene
         Widgets.Label("Tele-Box", new Rect(0, args.Rect.height - 30, 100, 30));
         
         var mousePos = Mouse.GetPosition();
-        var mousePos2 = UIRoot.MousePosition;
+        var mousePos2 = TEvent.Current.MousePos;
         Widgets.Label($"({mousePos.X}, {mousePos.Y})", new Rect(UIRoot.Width - 100, UIRoot.Height - 100, 100, 12));
-        Widgets.Label($"({mousePos2.X}, {mousePos2.Y})", new Rect(UIRoot.Width - 100, UIRoot.Height - 84, 100, 12));
+        Widgets.Label($"({mousePos2.x}, {mousePos2.y})", new Rect(UIRoot.Width - 100, UIRoot.Height - 84, 100, 12));
         
         Widgets.Rectangle(topBar, Color.Black, new Color(255,255,255,125));
         

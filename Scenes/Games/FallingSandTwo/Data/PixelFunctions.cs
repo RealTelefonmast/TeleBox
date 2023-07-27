@@ -91,7 +91,7 @@ public static class PixelFunctions
             case MaterialType.Wanderer:
                 break;
             default:
-                throw new ArgumentOutOfRangeException();
+                break;
         }
     }
 
@@ -157,9 +157,35 @@ public static class PixelFunctions
         //Below the neighbor particle, this particle then cannot move down or to the left either, so it moves right next to the other particle
         //This makes it look like the particles all move in sync to the right
 
-        _ = new ParticleFunction(pos, particle).MoveByAcc(grid).MoveDownLeftRight(grid).MoveInLiquid(grid);
-        return;
-        _ = new ParticleFunction(pos, particle).MoveDown(grid).RandLeftRight(grid);
+        //Move Down
+        var down = pos + GenAdj.Down;
+        if (Inbounds(down, grid) && IsEmpty(down, grid))
+        {
+            var temp = grid[down];
+            grid.Set(down, particle, true);
+            grid.Set(pos, temp, false);
+            return;
+        }
+
+        //Move Down Left OR Down Right
+        
+        var randSide = Rand.Chance(0.5f);
+        var first =   down + (randSide ? GenAdj.Left : GenAdj.Right);
+        var second = down + (randSide ? GenAdj.Right : GenAdj.Left);
+        if (Inbounds(first, grid) && IsEmpty(first, grid))
+        {
+            var temp = grid[first];
+            grid.Set(first, particle, true);
+            grid.Set(pos, temp, false);
+            return;
+        }
+        if (Inbounds(second, grid) && IsEmpty(second, grid))
+        {
+            var temp = grid[second];
+            grid.Set(second, particle, true);
+            grid.Set(pos, temp, false);
+            return;
+        }
     }
 
 

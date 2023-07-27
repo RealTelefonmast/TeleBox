@@ -39,10 +39,10 @@ public class FallingSandGame : BaseGame
         _world.Update();
     }
 
-    public override void HandleEvents(TeleEventArgs args)
+    public override void HandleEvents(TEvent args)
     {
         base.HandleEvents(args);
-        _world.StartInput(args.MouseButton, args.MouseX, args.MouseY);
+        //_world.StartInput(args.MouseButton, args.MouseX, args.MouseY);
         _world.Input();
         _world.StopInput();
     }
