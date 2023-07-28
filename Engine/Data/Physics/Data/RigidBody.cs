@@ -2,7 +2,7 @@
 
 namespace TeleBox.Engine.Data.Physics.Data;
 
-public class RigidBody
+public unsafe struct RigidBody
 {
     public Vector2 position;
     public Vector2 velocity;
@@ -10,16 +10,36 @@ public class RigidBody
     public float torque;
     public float orient; // radians
     public Vector2 force;
-    public float I;  // moment of inertia
+    public float I; // moment of inertia
     public float iI; // inverse inertia
-    public float m;  // mass
+    public float m; // mass
     public float im; // inverse mass
     public float staticFriction;
     public float dynamicFriction;
     public float restitution;
-    
-    public IShape shape;
-    
+
+    public PixelShape* shape;
+
+    public RigidBody(PixelShape* pixelShape, int x, int y)
+    {
+        position = new Vector2(x, y);
+        velocity = Vector2.Zero;
+        angularVelocity = 0;
+        torque = 0;
+        orient = Rand.Range(-Const.PI, Const.PI);
+        force = Vector2.Zero;
+        staticFriction = 0.5f;
+        dynamicFriction = 0.3f;
+        restitution = 0.2f;
+    }
+
+    public void Init(RigidBody* body, PixelShape* pixelShape)
+    {
+        shape = pixelShape->Clone();
+        shape->Body = body;
+        shape->Initialize();
+    }
+
     public void ApplyForce(Vector2 f)
     {
         force += f;

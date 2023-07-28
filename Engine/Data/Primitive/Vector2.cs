@@ -1,8 +1,13 @@
-﻿namespace TeleBox.Engine.Data.Primitive;
+﻿using System.Runtime.InteropServices;
 
-public struct Vector2
+namespace TeleBox.Engine.Data.Primitive;
+
+[StructLayout(LayoutKind.Explicit)]
+public readonly struct Vector2
 {
+    [FieldOffset(0)]
     public readonly float x;
+    [FieldOffset(4)]
     public readonly float y;
     
     public  float LengthSqr =>  x * x + y * y;

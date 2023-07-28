@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using System.Runtime.InteropServices;
+using SFML.Graphics;
 using TeleBox.Engine.Data.Primitive;
 using TeleBox.UI;
 
@@ -15,12 +16,18 @@ public enum MaterialType : byte
     Stone
 }
 
-public struct Particle
+[StructLayout(LayoutKind.Explicit)]
+public unsafe struct Particle
 {
+    [FieldOffset(0)]
     public MaterialType id;
+    [FieldOffset(1)]
     public float lifeTime;
+    [FieldOffset(5)]
     public Vector2 velocity;
+    [FieldOffset(7)]
     public Color color;
+    [FieldOffset(10)]
     public bool hasBeenUpdated;
 
     public Particle(MaterialType id)

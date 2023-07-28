@@ -6,11 +6,36 @@ using IntRect = TeleBox.Engine.Data.Primitive.IntRect;
 
 namespace TeleBox.Scenes.Games.FallingSandTwo.Data.World;
 
-public class ParticleGrid
+
+public unsafe struct ParticleGridBlock
+{
+    private fixed byte _particles[1024 * 512 * 11];
+    
+    public Particle this[int index]
+    {
+        get
+        {
+            fixed (byte* p = _particles)
+            {
+                return *(Particle*)(p + index * sizeof(Particle));
+            }
+        }
+        set
+        {
+            fixed (byte* p = _particles)
+            {
+                *(Particle*)(p + index * sizeof(Particle)) = value;
+            }
+        }
+    }
+}
+
+public unsafe class ParticleGrid
 {
     //Main Buffer
     private IntVec2 _size;
     private IntVec2 _chunkSize;
+    //private fixed byte _particles[1024 * 512 * 11];
     private readonly Particle[] _particles;
     private readonly ParticleChunk[] _dataChunks;
 
