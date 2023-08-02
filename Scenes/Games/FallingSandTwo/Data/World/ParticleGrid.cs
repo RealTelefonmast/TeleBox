@@ -1,5 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.Window;
+using TeleBox.Engine.Data;
 using TeleBox.Engine.Data.Primitive;
 using TeleBox.UI;
 using IntRect = TeleBox.Engine.Data.Primitive.IntRect;
@@ -9,20 +10,21 @@ namespace TeleBox.Scenes.Games.FallingSandTwo.Data.World;
 
 public unsafe struct ParticleGridBlock
 {
-    private fixed byte _particles[1024 * 512 * 11];
+    private fixed byte _grid[1024 * 512 * 11];
+    private fixed byte _buffer[1024 * 512 * 11];
     
     public Particle this[int index]
     {
         get
         {
-            fixed (byte* p = _particles)
+            fixed (byte* p = _grid)
             {
                 return *(Particle*)(p + index * sizeof(Particle));
             }
         }
         set
         {
-            fixed (byte* p = _particles)
+            fixed (byte* p = _grid)
             {
                 *(Particle*)(p + index * sizeof(Particle)) = value;
             }
@@ -33,14 +35,15 @@ public unsafe struct ParticleGridBlock
 public unsafe class ParticleGrid
 {
     //Main Buffer
-    private IntVec2 _size;
-    private IntVec2 _chunkSize;
+    private IntVec2 _gridSize;
+    private IntVec2 _chunkGridSize;
     //private fixed byte _particles[1024 * 512 * 11];
     private readonly Particle[] _particles;
+    private readonly Particle[] _buffer;
     private readonly ParticleChunk[] _dataChunks;
 
     private static int ChunkSize => PixelWorldConfig.ChunkSize;
-    public IntVec2 Size => _size;
+    public IntVec2 Size => _gridSize;
 
     
     public Particle this[int index] => _particles[index];
@@ -49,35 +52,36 @@ public unsafe class ParticleGrid
     {
         get
         {
-            var index = pos.y * _size.x + pos.x;
+            var index = pos.y * _gridSize.x + pos.x;
             return _particles[index];
         }
         private set
         {
-            var index = pos.y * _size.x + pos.x;
+            var index = pos.y * _gridSize.x + pos.x;
             _particles[index] = value;
         }
     }
 
     public ParticleGrid(int width, int height)
     {
-        _size = new IntVec2(width, height);
-        _chunkSize = new IntVec2(width/ChunkSize, height/ChunkSize);
+        _gridSize = new IntVec2(width, height);
+        _chunkGridSize = new IntVec2(width/ChunkSize, height/ChunkSize);
         _particles = new Particle[width * height];
-        _dataChunks = new ParticleChunk[_chunkSize.Area];
+        _buffer = new Particle[width * height];
+        _dataChunks = new ParticleChunk[_chunkGridSize.Area];
 
-        for (int x = 0; x < _chunkSize.x; x++)
+        for (int x = 0; x < _chunkGridSize.x; x++)
         {
-            for (int y = 0; y < _chunkSize.y; y++)
+            for (int y = 0; y < _chunkGridSize.y; y++)
             {
                 var bounds = new IntRect(x * ChunkSize, y * ChunkSize, ChunkSize, ChunkSize);
-                _dataChunks[y * _chunkSize.x + x] = new ParticleChunk(bounds);
+                _dataChunks[y * _chunkGridSize.x + x] = new ParticleChunk(bounds);
             }
         }
     }
 
     private uint frame = 0;
-    
+
     public void Step(float delta)
     {
         for (int i = 0; i < _dataChunks.Length; i++)
@@ -87,26 +91,51 @@ public unsafe class ParticleGrid
             _dataChunks[i] = chunk;
         }
 
-        for (int i = 0; i < _dataChunks.Length; i++)
+        //Array.Copy(_particles, this._buffer, this._particles.Length);
+
+
+        for (int c = 0; c < _dataChunks.Length; c++)
         {
-            var chunk = _dataChunks[i];
+            var chunk = _dataChunks[c];
             var dr = chunk.DirtyRect;
-            for (int x = dr.x; x < dr.XMax; x++)
+            fixed (int* indices = new int[dr.Area])
             {
+                int bigInd = 0;
                 for (int y = dr.y; y < dr.YMax; y++)
                 {
-                    var index = y * _size.x + x;
+                    for (int x = dr.x; x < dr.XMax; x++)
+                    {
+                        var index = y * _gridSize.x + x;
+                        indices[bigInd] = index;
+                        bigInd++;
+                    }
+                }
+
+                FisherYatesShuffle(indices, dr.Area);
+
+                for (int i = 0; i < dr.Area; i++)
+                {
+                    var index = indices[i];
                     var particle = _particles[index];
                     if (particle.id != MaterialType.Empty)
                     {
                         //Step Particle
-                        PixelFunctions.Update(index, new IntVec2(x,y), particle, this);
+                        PixelFunctions.Update(index, new IntVec2(index % _gridSize.x, index / _gridSize.x),particle, this);
                     }
                 }
             }
+
+            frame++;
         }
-        
-        frame++;
+    }
+
+    private static unsafe void FisherYatesShuffle<T>(T* array, int length) where T : unmanaged
+    {
+        for (var i = length - 1; i > 0; i--)
+        {
+            var j = Rand.Range(0, i+1);
+            (array[i], array[j]) = (array[j], array[i]);
+        }
     }
 
     private void UpdateDirtyRect(ref ParticleChunk chunk)
@@ -122,7 +151,7 @@ public unsafe class ParticleGrid
         {
             for (int x = chunk.Bounds.x; x < chunk.Bounds.XMax; x++)
             {
-                var index = y * _size.x + x;
+                var index = y * _gridSize.x + x;
                 var particle = _particles[index];
 
                 if (!particle.hasBeenUpdated)
@@ -130,20 +159,20 @@ public unsafe class ParticleGrid
                     continue;
                 }
 
-                const int paddingHalf = 0;
+                const int padding = 0;
 
-                var checkX = x - paddingHalf;
-                var checkY = y - paddingHalf;
+                var checkX = x - padding;
+                var checkY = y - padding;
 
                 if (checkX < minX)
                 {
-                    minX = Math.Clamp(checkX, 0, _size.x - 1);
+                    minX = Math.Clamp(checkX, 0, _gridSize.x - 1);
                     workingRect.x = minX;
                 }
 
                 if (checkY < minY)
                 {
-                    minY = Math.Clamp(checkY, 0, _size.y - 1);
+                    minY = Math.Clamp(checkY, 0, _gridSize.y - 1);
                     workingRect.y = minY;
                 }
 
@@ -162,11 +191,13 @@ public unsafe class ParticleGrid
             }
         }
 
-        workingRect.x = Math.Clamp(workingRect.x - 1, 0, _size.x - 1);
-        workingRect.y = Math.Clamp(workingRect.y - 2, 0, _size.y - 1);
-        workingRect.width = Math.Clamp((maxX - minX + 1) + 2, 0, (_size.x - workingRect.x) - 1);
-        workingRect.height = Math.Clamp((maxY - minY + 1) + 4, 0, (_size.y - workingRect.y) - 1);
+        if (workingRect.x > 0)
+            _ = " v";
 
+        workingRect.x = Math.Clamp(workingRect.x - 2, 0, _gridSize.x - 1);
+        workingRect.y = Math.Clamp(workingRect.y - 2, 0, _gridSize.y - 1);
+        workingRect.width = Math.Clamp((maxX - minX) + 4, 0, _gridSize.x - workingRect.x);
+        workingRect.height = Math.Clamp((maxY - minY) + 4, 0, _gridSize.y - workingRect.y);
         chunk.SetDirty(workingRect);
     }
 
@@ -179,12 +210,12 @@ public unsafe class ParticleGrid
             var rightDown = TEvent.IsMouseDown(Mouse.Button.Right);
             if (leftDown)
             {
-                for (int i = 0; i < 16; i++)
+                for (int i = 0; i < 24; i++)
                 {
-                    for (int k = 0; k < 16; k++)
+                    for (int k = 0; k < 24; k++)
                     {
                         Set(new IntVec2(pos.x + i, pos.y + k),
-                            new Particle( MaterialType.Sand )
+                            new Particle( MaterialType.Stone )
                             {
                                 lifeTime = 2,
                                 velocity = new Vector2(0, 1),
@@ -195,12 +226,12 @@ public unsafe class ParticleGrid
             }
             if (rightDown)
             {
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < 32; i++)
                 {
-                    for (int k = 0; k < 8; k++)
+                    for (int k = 0; k < 32; k++)
                     {
                         Set(new IntVec2(pos.x + i, pos.y + k),
-                            new Particle(MaterialType.Stone)
+                            new Particle(MaterialType.Water)
                             {
                                 lifeTime = 2,
                                 velocity = new Vector2(0, 1),
@@ -217,9 +248,8 @@ public unsafe class ParticleGrid
         for (var i = 0; i < _dataChunks.Length; i++)
         {
             var chunk = _dataChunks[i];
-            Widgets.Rectangle(
-                new Rect(chunk.DirtyRect.x, chunk.DirtyRect.y, chunk.DirtyRect.width, chunk.DirtyRect.height),
-                Color.Red, Color.Transparent);
+            Widgets.Rectangle(chunk.Bounds.ToRect(),new Color(0,255,0,125), Color.Transparent);
+            Widgets.Rectangle(chunk.DirtyRect.ToRect(),new Color(255,0,0,150), Color.Transparent);
         }
     }
 

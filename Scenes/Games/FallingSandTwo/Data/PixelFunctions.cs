@@ -85,7 +85,7 @@ public static class PixelFunctions
                 UpdateSand(index, pos, particle, grid);
                 break;
             case MaterialType.Water:
-                //UpdateWater(index, pos, particle, grid);
+                UpdateWater(index, pos, particle, grid);
                 break;
 
             case MaterialType.Wanderer:
@@ -133,6 +133,15 @@ public static class PixelFunctions
         return false;
     }
 
+    private static bool IsType(MaterialType type, IntVec2 pos, ParticleGrid grid)
+    { 
+        if (Inbounds(pos, grid))
+        {
+            return grid[pos].id == type;
+        }
+        return false;
+    }
+    
     internal static bool IsInLiquid(IntVec2 pos, ParticleGrid grid, out IntVec2 lPos)
     {
         lPos = IntVec2.Zero;
@@ -159,7 +168,7 @@ public static class PixelFunctions
 
         //Move Down
         var down = pos + GenAdj.Down;
-        if (Inbounds(down, grid) && IsEmpty(down, grid))
+        if (Inbounds(down, grid) && (IsType(MaterialType.Empty, down, grid) || IsType(MaterialType.Water, down, grid)))
         {
             var temp = grid[down];
             grid.Set(down, particle, true);
@@ -172,14 +181,14 @@ public static class PixelFunctions
         var randSide = Rand.Chance(0.5f);
         var first =   down + (randSide ? GenAdj.Left : GenAdj.Right);
         var second = down + (randSide ? GenAdj.Right : GenAdj.Left);
-        if (Inbounds(first, grid) && IsEmpty(first, grid))
+        if (Inbounds(first, grid) && (IsType(MaterialType.Empty, first, grid) || IsType(MaterialType.Water, first, grid)))
         {
             var temp = grid[first];
             grid.Set(first, particle, true);
             grid.Set(pos, temp, false);
             return;
         }
-        if (Inbounds(second, grid) && IsEmpty(second, grid))
+        if (Inbounds(second, grid) && (IsType(MaterialType.Empty, second, grid) || IsType(MaterialType.Water, second, grid)))
         {
             var temp = grid[second];
             grid.Set(second, particle, true);
@@ -188,6 +197,37 @@ public static class PixelFunctions
         }
     }
 
+    private static void UpdateWater(int index, IntVec2 pos, Particle particle, ParticleGrid grid)
+    {
+        var down = pos + GenAdj.Down;
+        if (Inbounds(down, grid) && IsEmpty(down, grid))
+        {
+            var temp = grid[down];
+            grid.Set(down, particle, true);
+            grid.Set(pos, temp, false);
+            return;
+        }
+        
+        //Move Down Left OR Down Right
+        var randSide2 = Rand.Chance(0.5f);
+        var first2 =   pos + (randSide2 ? GenAdj.Left : GenAdj.Right);
+        var second2 = pos + (randSide2 ? GenAdj.Right : GenAdj.Left);
+        if (Inbounds(first2, grid) && IsEmpty(first2, grid))
+        {
+            var temp = grid[first2];
+            grid.Set(first2, particle, true);
+            grid.Set(pos, temp, false);
+            return;
+        }
+        if (Inbounds(second2, grid) && IsEmpty(second2, grid))
+        {
+            var temp = grid[second2];
+            grid.Set(second2, particle, true);
+            grid.Set(pos, temp, false);
+            return;
+        }
+    }
+    
 
     /*public static void UpdateWater(int index, IntVec2 pos, Particle particle, ParticleGrid grid)
     {

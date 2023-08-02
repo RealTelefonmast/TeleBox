@@ -16,18 +16,12 @@ public enum MaterialType : byte
     Stone
 }
 
-[StructLayout(LayoutKind.Explicit)]
 public unsafe struct Particle
 {
-    [FieldOffset(0)]
     public MaterialType id;
-    [FieldOffset(1)]
     public float lifeTime;
-    [FieldOffset(5)]
     public Vector2 velocity;
-    [FieldOffset(7)]
     public Color color;
-    [FieldOffset(10)]
     public bool hasBeenUpdated;
 
     public Particle(MaterialType id)
@@ -35,7 +29,7 @@ public unsafe struct Particle
         this.id = id;
         lifeTime = 1;
         velocity = Vector2.Zero;
-        color = MaterialDB.GetColor(id,1);
+        color = MaterialDB.GetColor(id,0);
         hasBeenUpdated = false;
     }
     

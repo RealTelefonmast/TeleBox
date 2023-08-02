@@ -12,7 +12,8 @@ public class IntRect
     
     public int XMax => x + width;
     public int YMax => y + height;
-    
+    public int Area => width * height;//{ get; set; }
+
     public IntRect(int x, int y, int width, int height)
     {
         this.x = x;
@@ -29,5 +30,18 @@ public class IntRect
     public override string ToString()
     {
         return $"({x}, {y}, {width}, {height})";
+    }
+
+    public Rect ToRect()
+    {
+        return new Rect(x, y, width, height);
+    }
+
+    public void ExpandBy(int i)
+    {
+        x -= i;
+        y -= i;
+        width += i * 2;
+        height += i * 2;
     }
 }
