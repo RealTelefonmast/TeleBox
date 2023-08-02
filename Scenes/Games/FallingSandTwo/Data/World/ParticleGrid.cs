@@ -91,29 +91,26 @@ public unsafe class ParticleGrid
             _dataChunks[i] = chunk;
         }
 
-        //Array.Copy(_particles, this._buffer, this._particles.Length);
-
-
         for (int c = 0; c < _dataChunks.Length; c++)
         {
             var chunk = _dataChunks[c];
-            var dr = chunk.DirtyRect;
-            fixed (int* indices = new int[dr.Area])
+            var rect = chunk.DirtyRect;
+            var rectSize = rect.Area;
+            fixed (int* indices = new int[rectSize])
             {
                 int bigInd = 0;
-                for (int y = dr.y; y < dr.YMax; y++)
+                for (int y = rect.y; y < rect.YMax; y++)
                 {
-                    for (int x = dr.x; x < dr.XMax; x++)
+                    for (int x = rect.x; x < rect.XMax; x++)
                     {
                         var index = y * _gridSize.x + x;
-                        indices[bigInd] = index;
-                        bigInd++;
+                        indices[bigInd++] = index;
                     }
                 }
 
-                FisherYatesShuffle(indices, dr.Area);
+                FisherYatesShuffle(indices, rectSize);
 
-                for (int i = 0; i < dr.Area; i++)
+                for (int i = 0; i < rect.Area; i++)
                 {
                     var index = indices[i];
                     var particle = _particles[index];
@@ -121,6 +118,12 @@ public unsafe class ParticleGrid
                     {
                         //Step Particle
                         PixelFunctions.Update(index, new IntVec2(index % _gridSize.x, index / _gridSize.x),particle, this);
+                        
+                        //Update Directly
+                        var chunkToUpdate = _dataChunks[i];
+                        chunkToUpdate.SetDirty(UpdateDirtyRect(_dataChunks[i], index % _gridSize.x,
+                            index / _gridSize.x, particle));
+                        _dataChunks[i] = chunkToUpdate;
                     }
                 }
             }
@@ -138,15 +141,23 @@ public unsafe class ParticleGrid
         }
     }
 
+    private IntRect UpdateDirtyRect(ParticleChunk chunk, int x, int y, Particle res)
+    {
+        var workingRect = chunk.Bounds; //new IntRect(0, 0, 0, 0);
+        return workingRect;
+    }
+
     private void UpdateDirtyRect(ref ParticleChunk chunk)
     {
-        var workingRect = new IntRect(0, 0, 0, 0);
+        var workingRect = chunk.Bounds; //new IntRect(0, 0, 0, 0);
         var minX = chunk.Bounds.XMax;
         var minY = chunk.Bounds.YMax;
 
         var maxX = chunk.Bounds.x;
         var maxY = chunk.Bounds.y;
 
+        chunk.SetDirty(workingRect);
+        return;
         for (int y = chunk.Bounds.y; y < chunk.Bounds.YMax; y++)
         {
             for (int x = chunk.Bounds.x; x < chunk.Bounds.XMax; x++)
